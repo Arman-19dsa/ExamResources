@@ -1,437 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+document.addEventListener('DOMContentLoaded', () => {
+    // ============================================
+    // THEME TOGGLE (DARK / LIGHT MODE)
+    // ============================================
+    const themeToggle = document.getElementById('themeToggle');
+    const toggleIcon = themeToggle.querySelector('.toggle-icon');
+    const html = document.documentElement;
 
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMNZ4J5W1L"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        html.setAttribute('data-theme', savedTheme);
+        updateToggleIcon(savedTheme);
+    }
 
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-        gtag('config', 'G-FMNZ4J5W1L');
-        </script>
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateToggleIcon(newTheme);
+    });
 
+    function updateToggleIcon(theme) {
+        toggleIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Resource Portal</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<base target="_blank">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <span class="logo-icon">🎓</span>
-                <span class="logo-text">Exam Resource Portal</span>
-            </div>
-            <div class="nav-right">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-                    <span class="toggle-icon">🌙</span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    // ============================================
+    // COLLAPSIBLE DROPDOWNS
+    // ============================================
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="container">
-            <h1 class="hero-title">Access Your Study Materials</h1>
-            <p class="hero-subtitle">Find notes, question banks, solutions, and syllabus for all your subjects in one place.</p>
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const menu = toggle.nextElementSibling;
+            const isOpen = menu.classList.contains('open');
 
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="searchInput" placeholder="Search for subjects..." autocomplete="off">
-            </div>
-        </div>
-    </header>
+            // Close all other open dropdowns
+            document.querySelectorAll('.dropdown-menu.open').forEach(openMenu => {
+                if (openMenu !== menu) {
+                    openMenu.classList.remove('open');
+                    openMenu.previousElementSibling.classList.remove('active');
+                }
+            });
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
+            // Toggle current dropdown
+            menu.classList.toggle('open');
+            toggle.classList.toggle('active');
+        });
+    });
 
-            <!-- Subjects Section -->
-            <section class="section subjects-section">
-                <div class="section-header">
-                    <span class="section-icon">📚</span>
-                    <h2 class="section-title">Subjects</h2>
-                </div>
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-menu.open').forEach(menu => {
+                menu.classList.remove('open');
+                menu.previousElementSibling.classList.remove('active');
+            });
+        }
+    });
 
-                <div class="subjects-grid" id="subjectsGrid">
+    // ============================================
+    // SEARCH FUNCTIONALITY
+    // ============================================
+    const searchInput = document.getElementById('searchInput');
+    const subjectsGrid = document.getElementById('subjectsGrid');
+    const subjectCards = document.querySelectorAll('.subject-card');
+    const noResults = document.getElementById('noResults');
 
-                    <!-- Operating System -->
-                    <article class="subject-card" data-subject="Operating System">
-                        <div class="card-header">
-                            <div class="card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                💻
-                            </div>
-                            <h3 class="card-title">Operating System</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">
-                                    <span>📄 Unit-wise Notes</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="OS_Unit1.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 1</span>
-                                    </a>
-                                    <a href="OS_Unit2.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 2</span>
-                                    </a>
-                                    <a href="OS_Unit3.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 3</span>
-                                    </a>
-                                    <a href="OS_Unit4.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 4</span>
-                                    </a>
-                                </div>
-                            </div>
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        let visibleCount = 0;
 
-                            <div class="button-group">
-                                <a href="OS_QB.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📘</span>
-                                    <span>Question Bank</span>
-                                </a>
-                                <a href="OS_QB_Solutions.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">✅</span>
-                                    <span>Solutions</span>
-                                </a>
-                                <a href="OS_Sample_papers.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📝</span>
-                                    <span>Sample Papers</span>
-                                </a>
-                                <a href="Operating_System_Syllabus.pdf" class="btn btn-primary" download>
-                                    <span class="btn-icon">📑</span>
-                                    <span>Syllabus</span>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
+        subjectCards.forEach(card => {
+            const subjectName = card.getAttribute('data-subject').toLowerCase();
 
-                    <!-- DAA -->
-                    <article class="subject-card" data-subject="Design & Analysis of Algorithm">
-                        <div class="card-header">
-                            <div class="card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                                📊
-                            </div>
-                            <h3 class="card-title">Design & Analysis of Algorithm</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">
-                                    <span>📄 Unit-wise Notes</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="DAA_Unit1.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 1</span>
-                                    </a>
-                                    <a href="DAA_Unit2.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 2</span>
-                                    </a>
-                                    <a href="DAA_Unit3.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 3</span>
-                                    </a>
-                                    <a href="DAA_Unit4.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 4</span>
-                                    </a>
-                                </div>
-                            </div>
+            if (subjectName.includes(query)) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
 
-                            <div class="button-group">
-                                <a href="DAA_QB.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📘</span>
-                                    <span>Question Bank</span>
-                                </a>
-                                <a href="DAA_QB_Solutions.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">✅</span>
-                                    <span>Solutions</span>
-                                </a>
-                                <a href="DAA_Sample_papers.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📝</span>
-                                    <span>Sample Papers</span>
-                                </a>
-                                <a href="DAA_Syllabus.pdf" class="btn btn-primary" download>
-                                    <span class="btn-icon">📑</span>
-                                    <span>Syllabus</span>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
+        // Show/hide no results message
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+            subjectsGrid.style.display = 'none';
+        } else {
+            noResults.style.display = 'none';
+            subjectsGrid.style.display = 'grid';
+        }
+    });
 
-                    <!-- UI/UX -->
-                    <article class="subject-card" data-subject="UI/UX">
-                        <div class="card-header">
-                            <div class="card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                                🎨
-                            </div>
-                            <h3 class="card-title">UI/UX</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">
-                                    <span>📄 Unit-wise Notes</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="UIUX_Unit1.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 1</span>
-                                    </a>
-                                    <a href="UIUX_Unit2.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 2</span>
-                                    </a>
-                                    <a href="UIUX_Unit3.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 3</span>
-                                    </a>
-                                    <a href="UIUX_Unit4.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 4</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <a href="UIUX_QB.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📘</span>
-                                    <span>Question Bank</span>
-                                </a>
-                                <a href="UIUX_QB_Solutions.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">✅</span>
-                                    <span>Solutions</span>
-                                </a>
-                                <a href="UIUX_Sample_papers.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📝</span>
-                                    <span>Sample Papers</span>
-                                </a>
-                                <a href="UIUX_Syllabus.pdf" class="btn btn-primary" download>
-                                    <span class="btn-icon">📑</span>
-                                    <span>Syllabus</span>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Cloud Computing -->
-                    <article class="subject-card" data-subject="Cloud Computing">
-                        <div class="card-header">
-                            <div class="card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                                ☁️
-                            </div>
-                            <h3 class="card-title">Cloud Computing</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">
-                                    <span>📄 Unit-wise Notes</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="CC_Unit1.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 1</span>
-                                    </a>
-                                    <a href="CC_Unit2.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 2</span>
-                                    </a>
-                                    <a href="CC_Unit3.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 3</span>
-                                    </a>
-                                    <a href="CC_Unit4.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 4</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <a href="CC_QB.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📘</span>
-                                    <span>Question Bank</span>
-                                </a>
-                                <a href="CC_QB_Solutions.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">✅</span>
-                                    <span>Solutions</span>
-                                </a>
-                                <a href="CC_Sample_papers.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📝</span>
-                                    <span>Sample Papers</span>
-                                </a>
-                                <a href="CC_Syllabus.pdf" class="btn btn-primary" download>
-                                    <span class="btn-icon">📑</span>
-                                    <span>Syllabus</span>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Generative AI -->
-                    <article class="subject-card" data-subject="Generative AI">
-                        <div class="card-header">
-                            <div class="card-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                                🤖
-                            </div>
-                            <h3 class="card-title">Generative AI</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">
-                                    <span>📄 Unit-wise Notes</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="GEN_AI_Unit1.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 1</span>
-                                    </a>
-                                    <a href="GEN_AI_Unit2.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 2</span>
-                                    </a>
-                                    <a href="GEN_AI_Unit3.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 3</span>
-                                    </a>
-                                    <a href="GEN_AI_Unit4.pdf" class="resource-link" download>
-                                        <span class="link-icon">📄</span>
-                                        <span>Unit 4</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <a href="GEN_AI_QB.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📘</span>
-                                    <span>Question Bank</span>
-                                </a>
-                                <a href="GEN_AI_QB_Solutions.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">✅</span>
-                                    <span>Solutions</span>
-                                </a>
-                                <a href="GEN_AI_Sample_papers.pdf" class="btn btn-secondary" download>
-                                    <span class="btn-icon">📝</span>
-                                    <span>Sample Papers</span>
-                                </a>
-                                <a href="GEN_AI_6TH_Syllabus.pdf" class="btn btn-primary" download>
-                                    <span class="btn-icon">📑</span>
-                                    <span>Syllabus</span>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                </div>
-
-                <!-- No Results Message -->
-                <div class="no-results" id="noResults" style="display: none;">
-                    <div class="no-results-icon">🔍</div>
-                    <h3>No subjects found</h3>
-                    <p>Try adjusting your search terms</p>
-                </div>
-            </section>
-
-            <!-- Exam Time Table Section -->
-            <section class="section timetable-section">
-                <div class="section-header">
-                    <span class="section-icon">📅</span>
-                    <h2 class="section-title">Exam Time Table</h2>
-                </div>
-                <div class="table-wrapper">
-                    <table class="timetable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Day</th>
-                                <th>Subject</th>
-                                <th>Time</th>
-                                <th>Duration</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>15 May 2026</td>
-                                <td>Tuesday</td>
-                                <td>Operating System</td>
-                                <td>10:00 AM</td>
-                                <td>3 Hours</td>
-                            </tr>
-                            <tr>
-                                <td>18 May 2026</td>
-                                <td>Thursday</td>
-                                <td>Design & Analysis of Algorithm</td>
-                                <td>10:00 AM</td>
-                                <td>3 Hours</td>
-                            </tr>
-                            <tr>
-                                <td>21 May 2026</td>
-                                <td>Saturday</td>
-                                <td>UI/UX</td>
-                                <td>10:00 AM</td>
-                                <td>3 Hours</td>
-                            </tr>
-                            <tr>
-                                <td>24 May 2026</td>
-                                <td>Tuesday</td>
-                                <td>Cloud Computing</td>
-                                <td>10:00 AM</td>
-                                <td>3 Hours</td>
-                            </tr>
-                            <tr>
-                                <td>27 May 2026</td>
-                                <td>Thursday</td>
-                                <td>Generative AI</td>
-                                <td>10:00 AM</td>
-                                <td>3 Hours</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Contact Section -->
-            <section class="section contact-section">
-                <div class="contact-card">
-                    <div class="contact-text">For any doubts & queries contact here</div>
-                    <div class="contact-icons">
-                        <a href="mailto:arman.tamboli23@pccoepune.org" class="contact-icon-link email-link" aria-label="Email">
-                            <svg class="contact-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
-                            </svg>
-                        </a>
-                        <a href="https://wa.me/918847712083" target="_blank" rel="noopener noreferrer" class="contact-icon-link whatsapp-link" aria-label="WhatsApp">
-                            <svg class="contact-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="currentColor"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-        <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p> Exam Resource Portal. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    // ============================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ============================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
