@@ -547,6 +547,116 @@ a {
 }
 
 /* ============================================
+   CONTACT SECTION
+   ============================================ */
+.contact-section {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.contact-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: box-shadow var(--transition-base), border-color var(--transition-base);
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.contact-card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-primary);
+}
+
+.contact-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.contact-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.contact-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.contact-svg-icon {
+    width: 24px;
+    height: 24px;
+    transition: all var(--transition-fast);
+}
+
+/* Email icon - default gray, hover red */
+.email-link {
+    color: var(--text-muted);
+}
+
+.email-link:hover {
+    transform: scale(1.1) translateY(-2px);
+    background: #EA4335;
+    border-color: #EA4335;
+    box-shadow: 0 4px 12px rgba(234, 67, 53, 0.35);
+    color: white;
+}
+
+/* WhatsApp icon - official green #25D366 */
+.whatsapp-link {
+    color: #25D366;
+    background: rgba(37, 211, 102, 0.1);
+    border-color: rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-link:hover {
+    transform: scale(1.1) translateY(-2px);
+    background: #25D366;
+    border-color: #25D366;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    color: white;
+}
+
+/* Responsive Contact Section */
+@media (max-width: 480px) {
+    .contact-card {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.25rem;
+    }
+
+    .contact-text {
+        font-size: 0.9375rem;
+    }
+
+    .contact-icon-link {
+        width: 44px;
+        height: 44px;
+    }
+
+    .contact-svg-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* ============================================
    ANIMATIONS
    ============================================ */
 @keyframes fadeInUp {
@@ -578,31 +688,37 @@ a {
     .hero-title {
         font-size: 1.875rem;
     }
-    
+
     .hero-subtitle {
         font-size: 1rem;
     }
-    
+
     .subjects-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .timetable th,
     .timetable td {
         padding: 0.875rem 1rem;
         font-size: 0.875rem;
     }
-    
+
     .card-header {
         padding: 1.25rem;
     }
-    
+
     .card-body {
         padding: 1.25rem;
     }
-    
+
     .section-title {
         font-size: 1.25rem;
+    }
+
+    .contact-card {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.25rem;
     }
 }
 
@@ -610,20 +726,34 @@ a {
     .logo-text {
         font-size: 1rem;
     }
-    
+
     .hero {
         padding: 3rem 0;
     }
-    
+
     .hero-title {
         font-size: 1.5rem;
     }
-    
+
     .search-input {
         padding: 0.875rem 0.875rem 0.875rem 2.75rem;
     }
-    
+
     .container {
         padding: 0 1rem;
+    }
+
+    .contact-text {
+        font-size: 0.9375rem;
+    }
+
+    .contact-icon-link {
+        width: 44px;
+        height: 44px;
+    }
+
+    .contact-svg-icon {
+        width: 20px;
+        height: 20px;
     }
 }
