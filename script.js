@@ -63,23 +63,43 @@ document.querySelectorAll('.dropdown-toggle').forEach(btn => {
 const infographicData = {
     os: {
         title: 'Operating System — Infographics',
-        images: []
+        images: [
+            'os_infographic1.png',
+            'os_infographic2.png'
+        ]
     },
     daa: {
         title: 'Design & Analysis of Algorithm — Infographics',
-        images: []
+        images: [
+            'daa_infographic_1.png',
+            'daa_infographic_2.png'
+        ]
     },
     uiux: {
         title: 'UI/UX — Infographics',
-        images: []
+        images: [
+            'uiux_infographic1.png',
+            'uiux_infographic2.png'
+        ]
     },
     cc: {
         title: 'Cloud Computing — Infographics',
-        images: []
+        images: [
+            'cc_infographic1.png',
+            'cc_infographic2.png',
+            'cc_infographic3.png',
+            'cc_infographic4.png',
+            'cc_infographic5.png',
+            'cc_infographic6.png',
+            'cc_infographic7.png',
+            'cc_infographic8.png'
+        ]
     },
     genai: {
         title: 'Generative AI — Infographics',
-        images: []
+        images: [
+            'genai_infographic1.png'
+        ]
     }
 };
 
