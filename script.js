@@ -1,239 +1,230 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // ============================================
-    // THEME TOGGLE (DARK / LIGHT MODE)
-    // ============================================
-    const themeToggle = document.getElementById('themeToggle');
-    const toggleIcon = themeToggle.querySelector('.toggle-icon');
-    const html = document.documentElement;
+/* ============================================
+   THEME TOGGLE
+   ============================================ */
+const themeToggle = document.getElementById('themeToggle');
+const toggleIcon  = themeToggle.querySelector('.toggle-icon');
 
-    // Load saved theme preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        html.setAttribute('data-theme', savedTheme);
-        updateToggleIcon(savedTheme);
-    }
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+toggleIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next    = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    toggleIcon.textContent = next === 'dark' ? '☀️' : '🌙';
+});
 
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateToggleIcon(newTheme);
+/* ============================================
+   SEARCH / FILTER
+   ============================================ */
+const searchInput  = document.getElementById('searchInput');
+const subjectsGrid = document.getElementById('subjectsGrid');
+const noResults    = document.getElementById('noResults');
+
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+    const cards  = subjectsGrid.querySelectorAll('.subject-card');
+    let visible  = 0;
+
+    cards.forEach(card => {
+        const subject = (card.dataset.subject || '').toLowerCase();
+        const match   = !query || subject.includes(query);
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
     });
 
-    function updateToggleIcon(theme) {
-        toggleIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+});
 
-    // ============================================
-    // COLLAPSIBLE DROPDOWNS
-    // ============================================
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+/* ============================================
+   DROPDOWNS (Unit-wise Notes)
+   ============================================ */
+document.querySelectorAll('.dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const menu    = btn.nextElementSibling;
+        const isOpen  = menu.classList.contains('open');
 
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const menu = toggle.nextElementSibling;
+        // Close all other open menus first
+        document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
+        document.querySelectorAll('.dropdown-toggle.active').forEach(b => b.classList.remove('active'));
 
-            // Close all other open dropdowns
-            document.querySelectorAll('.dropdown-menu.open').forEach(openMenu => {
-                if (openMenu !== menu) {
-                    openMenu.classList.remove('open');
-                    openMenu.previousElementSibling.classList.remove('active');
-                }
-            });
-
-            // Toggle current dropdown
-            menu.classList.toggle('open');
-            toggle.classList.toggle('active');
-        });
-    });
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-menu.open').forEach(menu => {
-                menu.classList.remove('open');
-                menu.previousElementSibling.classList.remove('active');
-            });
-        }
-    });
-
-    // ============================================
-    // SEARCH FUNCTIONALITY
-    // ============================================
-    const searchInput = document.getElementById('searchInput');
-    const subjectsGrid = document.getElementById('subjectsGrid');
-    const subjectCards = document.querySelectorAll('.subject-card');
-    const noResults = document.getElementById('noResults');
-
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        let visibleCount = 0;
-
-        subjectCards.forEach(card => {
-            const subjectName = card.getAttribute('data-subject').toLowerCase();
-
-            if (subjectName.includes(query)) {
-                card.style.display = 'flex';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        // Show/hide no results message
-        if (visibleCount === 0) {
-            noResults.style.display = 'block';
-            subjectsGrid.style.display = 'none';
-        } else {
-            noResults.style.display = 'none';
-            subjectsGrid.style.display = 'grid';
-        }
-    });
-
-    // ============================================
-    // SMOOTH SCROLL FOR ANCHOR LINKS
-    // ============================================
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // ============================================
-    // INFOGRAPHIC MODAL
-    // ============================================
-    const infographicToggles = document.querySelectorAll('.infographic-toggle');
-    const modal = document.getElementById('infographicModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalImages = document.getElementById('modalImages');
-    const modalClose = document.getElementById('modalClose');
-    const modalBackdrop = modal.querySelector('.modal-backdrop');
-
-    // Infographic data for each subject
-    const infographicData = {
-        os: {
-            title: 'Operating System Infographics',
-            images: [
-                { src: 'os_infographic1.png', alt: 'OS Infographic 1' },
-                { src: 'os_infographic2.png', alt: 'OS Infographic 2' }
-            ]
-        },
-        daa: {
-            title: 'Design & Analysis of Algorithm Infographics',
-            images: [
-                { src: 'daa_infographic_1.png', alt: 'DAA Infographic 1' },
-                { src: 'daa_infographic_2.png', alt: 'DAA Infographic 2' }
-            ]
-        },
-        uiux: {
-            title: 'UI/UX Infographics',
-            images: [
-                { src: 'uiux_infographic1.png', alt: 'UI/UX Infographic 1' },
-                { src: 'uiux_infographic2.png', alt: 'UI/UX Infographic 2' }
-            ]
-        },
-        cc: {
-            title: 'Cloud Computing Infographics',
-            images: [
-                { src: 'cc_infographic1.png', alt: 'CC Infographic 1' },
-                { src: 'cc_infographic2.png', alt: 'CC Infographic 2' },
-                { src: 'cc_infographic3.png', alt: 'CC Infographic 3' },
-                { src: 'cc_infographic4.png', alt: 'CC Infographic 4' },
-                { src: 'cc_infographic5.png', alt: 'CC Infographic 5' },
-                { src: 'cc_infographic6.png', alt: 'CC Infographic 6' },
-                { src: 'cc_infographic7.png', alt: 'CC Infographic 7' }
-            ]
-        },
-        genai: {
-            title: 'Generative AI Infographics',
-            images: [
-                { src: 'genai_infographic1.png', alt: 'GEN AI Infographic 1' }
-            ]
-        }
-    };
-
-    function openModal(subject) {
-        const data = infographicData[subject];
-        if (!data) return;
-
-        modalTitle.textContent = data.title;
-        modalImages.innerHTML = data.images.map(img => `
-            <div class="modal-image-card">
-                <img src="${img.src}" alt="${img.alt}" loading="lazy">
-            </div>
-        `).join('');
-
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        // Add zoom functionality to modal images
-        modalImages.querySelectorAll('.modal-image-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const img = card.querySelector('img');
-                openZoom(img.src, img.alt);
-            });
-        });
-    }
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    // Zoom overlay
-    let zoomOverlay = null;
-    function openZoom(src, alt) {
-        if (!zoomOverlay) {
-            zoomOverlay = document.createElement('div');
-            zoomOverlay.className = 'image-zoom-overlay';
-            zoomOverlay.innerHTML = `
-                <button class="zoom-close">&times;</button>
-                <img src="" alt="">
-            `;
-            document.body.appendChild(zoomOverlay);
-
-            zoomOverlay.querySelector('.zoom-close').addEventListener('click', closeZoom);
-            zoomOverlay.addEventListener('click', (e) => {
-                if (e.target === zoomOverlay) closeZoom();
-            });
-        }
-
-        zoomOverlay.querySelector('img').src = src;
-        zoomOverlay.querySelector('img').alt = alt;
-        zoomOverlay.classList.add('active');
-    }
-
-    function closeZoom() {
-        if (zoomOverlay) zoomOverlay.classList.remove('active');
-    }
-
-    infographicToggles.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const subject = btn.getAttribute('data-subject');
-            openModal(subject);
-        });
-    });
-
-    modalClose.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', closeModal);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (zoomOverlay && zoomOverlay.classList.contains('active')) {
-                closeZoom();
-            } else if (modal.classList.contains('active')) {
-                closeModal();
-            }
+        if (!isOpen) {
+            menu.classList.add('open');
+            btn.classList.add('active');
         }
     });
 });
+
+/* ============================================
+   INFOGRAPHIC MODAL
+   ============================================ */
+const infographicData = {
+    os: {
+        title: 'Operating System — Infographics',
+        images: []
+    },
+    daa: {
+        title: 'Design & Analysis of Algorithm — Infographics',
+        images: []
+    },
+    uiux: {
+        title: 'UI/UX — Infographics',
+        images: []
+    },
+    cc: {
+        title: 'Cloud Computing — Infographics',
+        images: []
+    },
+    genai: {
+        title: 'Generative AI — Infographics',
+        images: []
+    }
+};
+
+const modal      = document.getElementById('infographicModal');
+const modalClose = document.getElementById('modalClose');
+const modalTitle = document.getElementById('modalTitle');
+const modalImages = document.getElementById('modalImages');
+const backdrop   = modal.querySelector('.modal-backdrop');
+
+document.querySelectorAll('.infographic-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const subject = btn.dataset.subject;
+        const data    = infographicData[subject];
+        if (!data) return;
+
+        modalTitle.textContent = data.title;
+        modalImages.innerHTML  = '';
+
+        if (data.images && data.images.length > 0) {
+            data.images.forEach(src => {
+                const card = document.createElement('div');
+                card.className = 'modal-image-card';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = data.title;
+                img.addEventListener('click', () => openZoom(src));
+                card.appendChild(img);
+                modalImages.appendChild(card);
+            });
+        } else {
+            modalImages.innerHTML = '<p style="color:var(--text-muted);padding:1rem;">No infographics available yet.</p>';
+        }
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+modalClose.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* Image zoom overlay */
+let zoomOverlay = null;
+
+function openZoom(src) {
+    if (!zoomOverlay) {
+        zoomOverlay = document.createElement('div');
+        zoomOverlay.className = 'image-zoom-overlay';
+        const img = document.createElement('img');
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'zoom-close';
+        closeBtn.textContent = '×';
+        closeBtn.addEventListener('click', () => zoomOverlay.classList.remove('active'));
+        zoomOverlay.addEventListener('click', e => {
+            if (e.target === zoomOverlay) zoomOverlay.classList.remove('active');
+        });
+        zoomOverlay.appendChild(img);
+        zoomOverlay.appendChild(closeBtn);
+        document.body.appendChild(zoomOverlay);
+    }
+    zoomOverlay.querySelector('img').src = src;
+    zoomOverlay.classList.add('active');
+}
+
+/* ============================================
+   STUDY PROMPTS — Copy & LLM navigation
+   ============================================ */
+function copyPromptItem(btn) {
+    const text = btn.closest('.prompt-item').querySelector('.prompt-item-text').textContent.trim();
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+}
+
+function copyForLLM(anchor) {
+    const text = anchor.closest('.prompt-item').querySelector('.prompt-item-text').textContent.trim();
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    // The href opens the LLM in a new tab automatically
+}
+
+function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR — Study Prompts card
+   ============================================ */
+(function () {
+    const area  = document.getElementById('promptsScrollArea');
+    const thumb = document.getElementById('scrollThumb');
+    const track = document.getElementById('scrollTrack');
+    if (!area || !thumb || !track) return;
+
+    function updateThumb() {
+        const ratio    = area.clientHeight / area.scrollHeight;
+        const thumbH   = Math.max(ratio * track.clientHeight, 30);
+        const maxScroll = area.scrollHeight - area.clientHeight;
+        const scrollRatio = maxScroll > 0 ? area.scrollTop / maxScroll : 0;
+        const thumbTop = scrollRatio * (track.clientHeight - thumbH);
+
+        thumb.style.height = thumbH + 'px';
+        thumb.style.top    = thumbTop + 'px';
+        track.style.opacity = ratio >= 1 ? '0' : '1';
+        track.style.pointerEvents = ratio >= 1 ? 'none' : 'auto';
+    }
+
+    area.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+    // Run after layout settles
+    setTimeout(updateThumb, 100);
+
+    // Drag thumb
+    let dragging = false, startY = 0, startTop = 0;
+
+    thumb.addEventListener('mousedown', e => {
+        dragging  = true;
+        startY    = e.clientY;
+        startTop  = area.scrollTop;
+        e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        const ratio  = (area.scrollHeight - area.clientHeight) / (track.clientHeight - thumb.offsetHeight);
+        area.scrollTop = startTop + (e.clientY - startY) * ratio;
+    });
+    document.addEventListener('mouseup', () => { dragging = false; });
+
+    // Click on track (not thumb)
+    track.addEventListener('click', e => {
+        if (e.target === thumb) return;
+        const rect      = track.getBoundingClientRect();
+        const clickRatio = (e.clientY - rect.top) / rect.height;
+        area.scrollTop   = clickRatio * (area.scrollHeight - area.clientHeight);
+    });
+})();
