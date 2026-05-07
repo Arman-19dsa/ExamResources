@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Computing Cheat Sheet – BCE26PE07</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #0ea5e9;
+    --sky-dark: #0369a1;
+    --sky-light: #bae6fd;
+    --ink: #0c1a2e;
+    --muted: #475569;
+    --surface: #f0f9ff;
+    --white: #ffffff;
+    --accent: #f97316;
+    --accent2: #10b981;
+    --accent3: #8b5cf6;
+    --accent4: #ef4444;
+    --border: #cbd5e1;
+    --tag-bg: #e0f2fe;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 10.5px;
+    line-height: 1.45;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none !important; }
+  }
+
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: white;
+    padding: 10px 18px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 10px; }
+
+  .cloud-icon {
+    width: 34px; height: 34px;
+    background: var(--sky);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .title-block h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    color: white;
+  }
+
+  .title-block p {
+    font-size: 9px;
+    color: var(--sky-light);
+    font-weight: 300;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .unit-pills {
+    display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end;
+  }
+
+  .unit-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--sky-light);
+  }
+
+  /* MAIN GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0;
+  }
+
+  .card {
+    padding: 9px 11px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .card:last-child { border-right: none; }
+
+  .card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .u1 .card-title { background: #dbeafe; color: #1e40af; }
+  .u2 .card-title { background: #dcfce7; color: #166534; }
+  .u3 .card-title { background: #fef3c7; color: #92400e; }
+  .u4 .card-title { background: #fce7f3; color: #9d174d; }
+  .span2 { grid-column: span 2; }
+  .span4 { grid-column: span 4; border-right: none; }
+
+  /* SECTION HEADERS */
+  .sh {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 5px 0 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-left: 3px solid;
+    padding-left: 5px;
+    line-height: 1.2;
+  }
+
+  .sh-blue { border-color: #3b82f6; }
+  .sh-green { border-color: #10b981; }
+  .sh-orange { border-color: #f97316; }
+  .sh-purple { border-color: #8b5cf6; }
+  .sh-red { border-color: #ef4444; }
+  .sh-sky { border-color: #0ea5e9; }
+  .sh-pink { border-color: #ec4899; }
+  .sh-teal { border-color: #14b8a6; }
+
+  /* LISTS */
+  ul.clean { list-style: none; padding: 0; }
+  ul.clean li {
+    padding: 1.5px 0 1.5px 11px;
+    position: relative;
+    color: var(--muted);
+    font-size: 9px;
+  }
+  ul.clean li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--sky);
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  ul.clean li strong { color: var(--ink); font-weight: 700; }
+  ul.clean li .tag {
+    background: var(--tag-bg);
+    color: var(--sky-dark);
+    padding: 0px 4px;
+    border-radius: 3px;
+    font-size: 8px;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* COMPARISON TABLE */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5px;
+    margin-top: 4px;
+  }
+  .mini-table th {
+    background: var(--ink);
+    color: white;
+    padding: 3px 5px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  .mini-table td {
+    padding: 2.5px 5px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .mini-table tr:nth-child(even) td { background: #f8fafc; }
+  .mini-table td:first-child { font-weight: 700; color: var(--ink); }
+
+  /* CHIPS / BADGES */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .chip {
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 8px;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+  }
+  .chip-blue { background: #dbeafe; color: #1d4ed8; }
+  .chip-green { background: #dcfce7; color: #15803d; }
+  .chip-orange { background: #ffedd5; color: #c2410c; }
+  .chip-purple { background: #ede9fe; color: #6d28d9; }
+  .chip-red { background: #fee2e2; color: #b91c1c; }
+  .chip-teal { background: #ccfbf1; color: #0f766e; }
+  .chip-pink { background: #fce7f3; color: #9d174d; }
+  .chip-sky { background: #e0f2fe; color: #0369a1; }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin: 4px 0;
+    flex-wrap: wrap;
+  }
+  .flow-box {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 8px;
+    font-weight: 700;
+    color: #0369a1;
+    text-align: center;
+  }
+  .flow-arrow { color: #94a3b8; font-size: 10px; font-weight: 700; }
+
+  /* CIA Triangle */
+  .cia-row {
+    display: flex; gap: 3px; margin-top: 4px;
+  }
+  .cia-box {
+    flex: 1;
+    border-radius: 5px;
+    padding: 4px 5px;
+    text-align: center;
+  }
+  .cia-box .cia-title {
+    font-size: 8.5px;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .cia-box .cia-desc { font-size: 7.5px; color: var(--muted); }
+  .cia-c { background: #dbeafe; color: #1e40af; }
+  .cia-i { background: #dcfce7; color: #166534; }
+  .cia-a { background: #ffedd5; color: #92400e; }
+
+  /* DB comparison row */
+  .db-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin-top: 4px;
+  }
+  .db-box {
+    border-radius: 4px;
+    padding: 4px 5px;
+    font-size: 8px;
+  }
+  .db-box .db-name {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 8px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .db-box .db-eg {
+    font-size: 7.5px;
+    color: var(--muted);
+  }
+  .db-rel { background: #dbeafe; color: #1e40af; }
+  .db-kv  { background: #dcfce7; color: #166534; }
+  .db-doc { background: #fef3c7; color: #92400e; }
+  .db-grph{ background: #ede9fe; color: #6d28d9; }
+  .db-imem{ background: #fce7f3; color: #9d174d; }
+  .db-ts  { background: #ccfbf1; color: #0f766e; }
+
+  /* FOOTER */
+  footer {
+    grid-column: span 4;
+    background: var(--ink);
+    color: var(--sky-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 18px;
+    font-size: 8px;
+    font-family: 'Space Mono', monospace;
+    border-top: 3px solid var(--sky);
+  }
+
+  .footer-right { color: var(--sky); font-weight: 700; }
+
+  /* HOTQ box */
+  .hotq-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    margin-top: 4px;
+  }
+  .hotq-item {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 8px;
+    color: #7c2d12;
+  }
+  .hotq-item strong {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 7.5px;
+    color: #9a3412;
+    margin-bottom: 1px;
+  }
+
+  /* divider line within card */
+  .div-line {
+    border: none;
+    border-top: 1px dashed #e2e8f0;
+    margin: 5px 0;
+  }
+
+  /* two-col layout inside card */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="header-left">
+      <div class="cloud-icon">☁️</div>
+      <div class="title-block">
+        <h1>Cloud Computing — Quick Cheat Sheet</h1>
+        <p>BCE26PE07 &nbsp;|&nbsp; B.Tech Computer Engineering &nbsp;|&nbsp; Semester VI &nbsp;|&nbsp; All Four Units</p>
+      </div>
+    </div>
+    <div class="unit-pills">
+      <span class="unit-pill">Unit I: Intro &amp; Virtualization</span>
+      <span class="unit-pill">Unit II: AWS &amp; Web Services</span>
+      <span class="unit-pill">Unit III: Database Services</span>
+      <span class="unit-pill">Unit IV: Security</span>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <!-- ====== UNIT I COL 1 – Wide ====== -->
+    <div class="card u1">
+      <span class="card-title">Unit I — Introduction &amp; Virtualization</span>
+
+      <p class="sh sh-blue">Cloud Service Models</p>
+      <table class="mini-table">
+        <tr>
+          <th>Model</th><th>Manages</th><th>Example</th><th>User Controls</th>
+        </tr>
+        <tr><td>IaaS</td><td>Hardware &amp; network</td><td>EC2, Azure VM</td><td>OS + Apps</td></tr>
+        <tr><td>PaaS</td><td>Platform &amp; runtime</td><td>Heroku, GAE</td><td>Apps only</td></tr>
+        <tr><td>SaaS</td><td>Everything</td><td>Gmail, Salesforce</td><td>Data only</td></tr>
+      </table>
+
+      <hr class="div-line">
+      <p class="sh sh-sky">Deployment Models</p>
+      <ul class="clean">
+        <li><strong>Public</strong> – Owned by provider; open to all. <span class="tag">AWS, Azure, GCP</span></li>
+        <li><strong>Private</strong> – Dedicated to one org; on-prem or hosted</li>
+        <li><strong>Hybrid</strong> – Mix of public + private; burst traffic use-case</li>
+        <li><strong>Community</strong> – Shared among similar orgs (govt, healthcare)</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-orange">5 Key Characteristics (NIST)</p>
+      <div class="chip-row">
+        <span class="chip chip-blue">On-demand Self-service</span>
+        <span class="chip chip-green">Broad Network Access</span>
+        <span class="chip chip-orange">Resource Pooling</span>
+        <span class="chip chip-purple">Rapid Elasticity</span>
+        <span class="chip chip-teal">Measured Service</span>
+      </div>
+
+      <hr class="div-line">
+      <p class="sh sh-purple">Virtualization Concepts</p>
+      <ul class="clean">
+        <li><strong>Hypervisor Type 1</strong> – Bare-metal (VMware ESXi, Hyper-V)</li>
+        <li><strong>Hypervisor Type 2</strong> – Hosted on OS (VirtualBox, VMware WS)</li>
+        <li><strong>vSphere</strong> – VMware's full virtualization platform suite</li>
+        <li><strong>Machine Image</strong> – Snapshot of VM state (AMI in AWS)</li>
+        <li><strong>Load Balancing</strong> – Distribute traffic across VMs for HA &amp; perf</li>
+        <li><strong>Capacity Planning</strong> – Predict &amp; scale resources proactively</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-teal">Containerization</p>
+      <div class="two-col">
+        <ul class="clean">
+          <li><strong>Docker</strong> – Container engine; image + runtime</li>
+          <li><strong>Dockerfile</strong> – Blueprint for container image</li>
+          <li><strong>Image →</strong> Container (run-time instance)</li>
+        </ul>
+        <ul class="clean">
+          <li><strong>Kubernetes (K8s)</strong> – Container orchestration</li>
+          <li><strong>Pod</strong> – Smallest K8s unit (1+ containers)</li>
+          <li><strong>Service</strong> – Stable endpoint for pods</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ====== UNIT II ====== -->
+    <div class="card u2">
+      <span class="card-title">Unit II — AWS &amp; Web Services</span>
+
+      <p class="sh sh-green">Core AWS Services</p>
+      <ul class="clean">
+        <li><strong>EC2</strong> – Virtual servers; configurable CPU, RAM, OS</li>
+        <li><strong>AMI</strong> – Pre-configured disk image for EC2</li>
+        <li><strong>S3</strong> – Object storage; buckets &amp; keys; 99.999…% durable</li>
+        <li><strong>EBS</strong> – Block storage attached to EC2 instances</li>
+        <li><strong>EFS</strong> – Scalable file system for multi-EC2 access</li>
+        <li><strong>Elastic Load Balancer</strong> – ALB / NLB for traffic distribution</li>
+        <li><strong>Auto Scaling</strong> – Add/remove EC2s based on metrics</li>
+        <li><strong>VPC</strong> – Isolated virtual network in AWS</li>
+        <li><strong>IAM</strong> – Identity &amp; access management (users, roles)</li>
+        <li><strong>CloudWatch</strong> – Monitoring, logs &amp; alarms</li>
+        <li><strong>Route 53</strong> – DNS &amp; routing (failover, latency-based)</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-sky">EC2 Key Concepts</p>
+      <ul class="clean">
+        <li><strong>Instance Types</strong> – t2/t3 (general), c-series (compute), r-series (memory)</li>
+        <li><strong>Pricing</strong> – On-demand | Reserved | Spot | Dedicated</li>
+        <li><strong>Security Groups</strong> – Stateful firewall at instance level</li>
+        <li><strong>Key Pairs</strong> – SSH access using .pem files</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-orange">SaaS vs PaaS</p>
+      <table class="mini-table">
+        <tr><th>Aspect</th><th>SaaS</th><th>PaaS</th></tr>
+        <tr><td>Control</td><td>Data only</td><td>App &amp; data</td></tr>
+        <tr><td>Target</td><td>End users</td><td>Developers</td></tr>
+        <tr><td>Example</td><td>Google Docs</td><td>Heroku, Beanstalk</td></tr>
+        <tr><td>Maintenance</td><td>None</td><td>Only app code</td></tr>
+      </table>
+
+      <hr class="div-line">
+      <p class="sh sh-purple">AWS Regions &amp; AZs</p>
+      <ul class="clean">
+        <li><strong>Region</strong> – Geographic area with 2+ AZs (e.g., ap-south-1)</li>
+        <li><strong>AZ</strong> – Isolated data center within a region</li>
+        <li><strong>Multi-AZ</strong> – Deploy across AZs for fault tolerance</li>
+      </ul>
+    </div>
+
+    <!-- ====== UNIT III ====== -->
+    <div class="card u3">
+      <span class="card-title">Unit III — Database Services</span>
+
+      <p class="sh sh-orange">Cloud DB Models</p>
+      <div class="db-grid">
+        <div class="db-box db-rel">
+          <span class="db-name">Relational</span>
+          MySQL, RDS<br>
+          <span class="db-eg">ACID | Structured | Joins</span>
+        </div>
+        <div class="db-box db-kv">
+          <span class="db-name">Key-Value</span>
+          DynamoDB<br>
+          <span class="db-eg">Fast lookup | Simple ops</span>
+        </div>
+        <div class="db-box db-doc">
+          <span class="db-name">Document</span>
+          MongoDB<br>
+          <span class="db-eg">JSON docs | Flexible schema</span>
+        </div>
+        <div class="db-box db-grph">
+          <span class="db-name">Graph</span>
+          Neo4j<br>
+          <span class="db-eg">Nodes + Edges | Relationships</span>
+        </div>
+        <div class="db-box db-imem">
+          <span class="db-name">In-Memory</span>
+          ElastiCache<br>
+          <span class="db-eg">Redis/Memcached | μs latency</span>
+        </div>
+        <div class="db-box db-ts">
+          <span class="db-name">Time-Series</span>
+          InfluxDB<br>
+          <span class="db-eg">IoT | Metrics | Logs</span>
+        </div>
+      </div>
+
+      <hr class="div-line">
+      <p class="sh sh-sky">DBaaS vs VM-DB</p>
+      <table class="mini-table">
+        <tr><th>Aspect</th><th>DBaaS (RDS)</th><th>DB on VM (EC2)</th></tr>
+        <tr><td>Setup</td><td>Click to deploy</td><td>Manual install</td></tr>
+        <tr><td>Patching</td><td>Automated</td><td>Manual</td></tr>
+        <tr><td>Backups</td><td>Built-in</td><td>DIY scripts</td></tr>
+        <tr><td>Control</td><td>Limited</td><td>Full OS access</td></tr>
+      </table>
+
+      <hr class="div-line">
+      <p class="sh sh-teal">Scalability Techniques</p>
+      <ul class="clean">
+        <li><strong>Sharding</strong> – Horizontal split of data across nodes (partition key)</li>
+        <li><strong>Replication</strong> – Copy data to replicas (read scaling + HA)</li>
+        <li><strong>Multi-AZ</strong> – Synchronous standby for automatic failover</li>
+        <li><strong>Read Replicas</strong> – Async copies for read-heavy workloads</li>
+        <li><strong>Caching</strong> – Write-through / Write-back with Redis/Memcached</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-purple">DB Choice by Use-Case</p>
+      <ul class="clean">
+        <li>Banking / ERP → <span class="tag">Relational (ACID)</span></li>
+        <li>Session / Cart → <span class="tag">Key-Value (DynamoDB)</span></li>
+        <li>Social / CMS → <span class="tag">Document (MongoDB)</span></li>
+        <li>Fraud Detection → <span class="tag">Graph (Neo4j)</span></li>
+        <li>IoT / Metrics → <span class="tag">Time-Series</span></li>
+        <li>Leaderboard / Cache → <span class="tag">In-Memory (Redis)</span></li>
+      </ul>
+    </div>
+
+    <!-- ====== UNIT IV ====== -->
+    <div class="card u4" style="border-right:none">
+      <span class="card-title">Unit IV — Security in Cloud</span>
+
+      <p class="sh sh-red">CIA Triad</p>
+      <div class="cia-row">
+        <div class="cia-box cia-c">
+          <span class="cia-title">Confidentiality</span>
+          <span class="cia-desc">Encryption, IAM, ACLs. Only authorized access.</span>
+        </div>
+        <div class="cia-box cia-i">
+          <span class="cia-title">Integrity</span>
+          <span class="cia-desc">Hashing, checksums. Data unchanged in transit.</span>
+        </div>
+        <div class="cia-box cia-a">
+          <span class="cia-title">Availability</span>
+          <span class="cia-desc">Multi-AZ, redundancy. 99.9%+ uptime SLA.</span>
+        </div>
+      </div>
+
+      <hr class="div-line">
+      <p class="sh sh-red">Types of Cloud Risks</p>
+      <ul class="clean">
+        <li><strong>Data Breach</strong> – Unauthorized data access / exfiltration</li>
+        <li><strong>Insecure APIs</strong> – Weak auth on management interfaces</li>
+        <li><strong>Insider Threat</strong> – Malicious/negligent privileged users</li>
+        <li><strong>Shared Tech Vuln</strong> – Hypervisor or shared infra exploits</li>
+        <li><strong>Account Hijack</strong> – Phishing, credential theft</li>
+        <li><strong>DDoS</strong> – Overload services to cause outages</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-pink">Security Mechanisms</p>
+      <ul class="clean">
+        <li><strong>Encryption</strong> – AES-256 at-rest; TLS 1.3 in-transit</li>
+        <li><strong>IAM / RBAC</strong> – Least privilege; role-based access</li>
+        <li><strong>MFA</strong> – Multi-factor authentication on accounts</li>
+        <li><strong>Key Mgmt (KMS)</strong> – Managed keys for encryption</li>
+        <li><strong>WAF</strong> – Web App Firewall; block SQLi, XSS</li>
+        <li><strong>VPC Security Groups</strong> – Stateful port-level firewall</li>
+        <li><strong>NACLs</strong> – Stateless subnet-level access control</li>
+        <li><strong>CloudTrail</strong> – Audit logs of all API calls</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-orange">HA &amp; Scalability</p>
+      <ul class="clean">
+        <li><strong>H. Scaling</strong> – Add more instances (scale-out)</li>
+        <li><strong>V. Scaling</strong> – Bigger instance (scale-up); has limit</li>
+        <li><strong>Auto Scaling</strong> – Trigger on CPU/RAM/latency metrics</li>
+        <li><strong>CDN</strong> – Edge caching (CloudFront) for global latency</li>
+      </ul>
+    </div>
+
+    <!-- ====== HOT EXAM QUESTIONS ROW ====== -->
+    <div class="card span4" style="border-right:none; border-bottom:none; padding:8px 11px 6px;">
+      <span class="card-title" style="background:#fff7ed; color:#9a3412; border: 1px solid #fed7aa;">🎯 Frequently Tested Questions (from QB)</span>
+      <div class="hotq-grid">
+        <div class="hotq-item">
+          <strong>U-I: Compare Deployment Models</strong>
+          Compare public, private &amp; hybrid cloud for security, scalability &amp; cost-effectiveness.
+        </div>
+        <div class="hotq-item">
+          <strong>U-I: VM vs Container</strong>
+          Differentiate VMs and containers; explain Docker &amp; Kubernetes with roles of Pods and Services.
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: Design Fault-Tolerant Arch</strong>
+          Design multi-tier AWS architecture for a bank handling millions of txns with zero downtime.
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: PaaS for DevOps</strong>
+          Evaluate how PaaS supports DevOps CI/CD pipelines &amp; reduces infra mgmt overhead.
+        </div>
+        <div class="hotq-item">
+          <strong>U-III: DB for E-commerce</strong>
+          Design cloud DB solution for millions of users &amp; real-time data; justify model selection.
+        </div>
+        <div class="hotq-item">
+          <strong>U-III: DBaaS vs VM-DB</strong>
+          Compare DBaaS (RDS) vs DB on EC2 for control, cost, scalability &amp; maintenance.
+        </div>
+        <div class="hotq-item">
+          <strong>U-IV: Design Secure Cloud Arch</strong>
+          Design secure cloud architecture ensuring Confidentiality, Integrity &amp; Availability (CIA).
+        </div>
+        <div class="hotq-item">
+          <strong>U-IV: Risk Mitigation</strong>
+          Analyze types of cloud risks &amp; propose a risk management framework for multi-cloud.
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Course: Cloud Computing &nbsp;|&nbsp; Code: BCE26PE07 &nbsp;|&nbsp; Credits: 1 &nbsp;|&nbsp; PCCoE Pune &nbsp;|&nbsp; AY 2025–26 Sem II</span>
+      <span class="footer-right">Units I–IV &nbsp;•&nbsp; 30 Hrs Total &nbsp;•&nbsp; FA1 + FA2 + SA</span>
+    </footer>
+
+  </div>
+</div>
+</body>
+</html>

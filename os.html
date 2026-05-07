@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operating Systems Cheat Sheet – BCE26PE01</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1a1a2e;
+    --surface: #ffffff;
+    --border: #e2e0d8;
+    --muted: #6b6b80;
+
+    --u1: #c84b31;    --u1-l: #fde8e4;  --u1-m: #f4a896;
+    --u2: #2563eb;    --u2-l: #dbeafe;  --u2-m: #93c5fd;
+    --u3: #059669;    --u3-l: #d1fae5;  --u3-m: #6ee7b7;
+    --u4: #7c3aed;    --u4-l: #ede9fe;  --u4-m: #c4b5fd;
+    --gold: #d97706;  --gold-l: #fef3c7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #ebe9e0;
+    color: var(--ink);
+    font-size: 9.5px;
+    line-height: 1.45;
+  }
+
+  @media print { body { background: white; } .page { box-shadow: none !important; } }
+
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 4px 50px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .hdr-left { display: flex; align-items: center; gap: 9px; }
+
+  .os-badge {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--u1), var(--u2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+
+  .title-block h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+
+  .title-block p {
+    font-size: 8px; color: #8888aa;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px; letter-spacing: 0.3px;
+  }
+
+  .unit-pills { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .unit-pill {
+    padding: 2px 9px;
+    border-radius: 3px;
+    font-size: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  .p1 { background: var(--u1-l); color: var(--u1); }
+  .p2 { background: var(--u2-l); color: var(--u2); }
+  .p3 { background: var(--u3-l); color: var(--u3); }
+  .p4 { background: var(--u4-l); color: var(--u4); }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr 1fr;
+    flex: 1;
+  }
+
+  .card {
+    padding: 8px 10px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .card.no-right { border-right: none; }
+  .card.no-bottom { border-bottom: none; }
+  .span4 { grid-column: span 4; border-right: none; }
+  .span2 { grid-column: span 2; }
+  .bg-u1 { background: #fffaf9; }
+  .bg-u2 { background: #f8faff; }
+  .bg-u3 { background: #f6fdf9; }
+  .bg-u4 { background: #faf8ff; }
+
+  /* ── CARD TITLE ── */
+  .ct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 2px 7px; border-radius: 3px;
+    display: inline-block; margin-bottom: 6px;
+  }
+  .ct1 { background: var(--u1-l); color: var(--u1); }
+  .ct2 { background: var(--u2-l); color: var(--u2); }
+  .ct3 { background: var(--u3-l); color: var(--u3); }
+  .ct4 { background: var(--u4-l); color: var(--u4); }
+
+  /* ── SECTION HEADERS ── */
+  .sh {
+    font-size: 8.5px; font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    margin: 5px 0 3px; padding-left: 6px;
+    border-left: 2.5px solid;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+  .sh1 { border-color: var(--u1); color: var(--u1); }
+  .sh2 { border-color: var(--u2); color: var(--u2); }
+  .sh3 { border-color: var(--u3); color: var(--u3); }
+  .sh4 { border-color: var(--u4); color: var(--u4); }
+  .shg { border-color: var(--gold); color: var(--gold); }
+
+  /* ── LISTS ── */
+  ul.cl { list-style: none; padding: 0; }
+  ul.cl li {
+    padding: 1.5px 0 1.5px 11px;
+    position: relative;
+    color: var(--muted);
+    font-size: 8.5px;
+  }
+  ul.cl li::before {
+    content: "›";
+    position: absolute; left: 0;
+    font-size: 11px; line-height: 1.2;
+    font-weight: 700;
+  }
+  .cl1 li::before { color: var(--u1); }
+  .cl2 li::before { color: var(--u2); }
+  .cl3 li::before { color: var(--u3); }
+  .cl4 li::before { color: var(--u4); }
+  ul.cl li strong { color: var(--ink); font-weight: 700; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px; padding: 1px 4px;
+    border-radius: 3px; font-weight: 600;
+  }
+  .t1 { background: var(--u1-l); color: var(--u1); }
+  .t2 { background: var(--u2-l); color: var(--u2); }
+  .t3 { background: var(--u3-l); color: var(--u3); }
+  .t4 { background: var(--u4-l); color: var(--u4); }
+  .tg { background: var(--gold-l); color: var(--gold); }
+
+  /* ── TABLE ── */
+  .mt {
+    width: 100%; border-collapse: collapse;
+    font-size: 8.5px; margin-top: 3px;
+  }
+  .mt th {
+    background: var(--ink); color: #fff;
+    padding: 3px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px; font-weight: 600;
+    text-align: left; letter-spacing: 0.2px;
+  }
+  .mt td {
+    padding: 2.5px 5px;
+    border-bottom: 1px solid #f0ede6;
+    color: var(--muted); font-size: 8px;
+    vertical-align: top;
+  }
+  .mt tr:nth-child(even) td { background: #f9f8f5; }
+  .mt td:first-child { font-weight: 700; color: var(--ink); }
+
+  /* ── CHIPS ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+  .chip {
+    padding: 2px 7px; border-radius: 12px;
+    font-size: 7.5px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ch1 { background: var(--u1-l); color: var(--u1); }
+  .ch2 { background: var(--u2-l); color: var(--u2); }
+  .ch3 { background: var(--u3-l); color: var(--u3); }
+  .ch4 { background: var(--u4-l); color: var(--u4); }
+  .chg { background: var(--gold-l); color: var(--gold); }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: var(--ink);
+    color: #e0e0ff;
+    border-radius: 5px;
+    padding: 4px 7px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+  .formula .fvar { color: var(--u3-m); }
+  .formula .flabel { color: #8888cc; font-size: 7.5px; }
+
+  /* ── ALGO BOXES ── */
+  .algo-row { display: flex; gap: 3px; margin-top: 3px; }
+  .algo-box {
+    flex: 1;
+    border-radius: 4px;
+    padding: 4px 5px;
+    border-left: 3px solid;
+  }
+  .algo-box .ab-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; font-weight: 700;
+    display: block; margin-bottom: 1px;
+  }
+  .algo-box .ab-desc { font-size: 7.5px; color: var(--muted); }
+  .ab1 { background: #fff5f3; border-color: var(--u1); }
+  .ab1 .ab-name { color: var(--u1); }
+  .ab2 { background: #f0f4ff; border-color: var(--u2); }
+  .ab2 .ab-name { color: var(--u2); }
+  .ab3 { background: #f0fdf8; border-color: var(--u3); }
+  .ab3 .ab-name { color: var(--u3); }
+  .ab4 { background: #f5f3ff; border-color: var(--u4); }
+  .ab4 .ab-name { color: var(--u4); }
+
+  /* ── PROCESS STATES ── */
+  .state-flow {
+    display: flex; align-items: center;
+    gap: 2px; flex-wrap: wrap; margin-top: 4px;
+  }
+  .state-box {
+    background: var(--u1-l);
+    border: 1px solid var(--u1-m);
+    border-radius: 4px;
+    padding: 3px 7px;
+    font-size: 8px; font-weight: 700;
+    color: var(--u1);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .s-arrow { color: #94a3b8; font-size: 10px; font-weight: 700; }
+
+  /* ── DEADLOCK CONDITIONS ── */
+  .dc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 4px; }
+  .dc-box {
+    border-radius: 4px; padding: 4px 6px;
+    border: 1px solid var(--u2-m);
+    background: var(--u2-l);
+  }
+  .dc-box .dc-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; font-weight: 700;
+    color: var(--u2); display: block; margin-bottom: 1px;
+  }
+  .dc-box .dc-desc { font-size: 7.5px; color: var(--muted); }
+
+  /* ── DIVIDER ── */
+  .dv { border: none; border-top: 1px solid var(--border); margin: 5px 0; }
+  .dv-dash { border: none; border-top: 1px dashed var(--border); margin: 4px 0; }
+
+  /* ── 2/3 col ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+
+  /* ── PAGE REPLACEMENT VISUAL ── */
+  .pr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 4px; }
+  .pr-box {
+    border-radius: 4px; padding: 4px 5px; text-align: center;
+  }
+  .pr-box .pr-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; font-weight: 700; display: block; margin-bottom: 1px;
+  }
+  .pr-box .pr-desc { font-size: 7.5px; color: var(--muted); }
+  .pr-fifo { background: #fde8e4; }
+  .pr-fifo .pr-name { color: var(--u1); }
+  .pr-lru { background: var(--u3-l); }
+  .pr-lru .pr-name { color: var(--u3); }
+  .pr-opt { background: var(--u4-l); }
+  .pr-opt .pr-name { color: var(--u4); }
+
+  /* ── HOT Q ── */
+  .hotq-bar {
+    background: var(--gold-l);
+    border-top: 2px solid var(--gold);
+    padding: 7px 11px 6px;
+  }
+  .hotq-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--gold); margin-bottom: 5px;
+  }
+  .hotq-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+  }
+  .hotq-item {
+    background: white;
+    border: 1px solid #f3d88a;
+    border-radius: 5px;
+    padding: 4px 7px; font-size: 8px;
+  }
+  .hotq-item strong {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px; color: var(--gold);
+    margin-bottom: 1px;
+  }
+  .hotq-item span { color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    border-top: 2px solid var(--u1);
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 4px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px; color: #6666aa;
+  }
+  footer .acc { color: #aaa8ff; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="hdr-left">
+      <div class="os-badge">⚙️</div>
+      <div class="title-block">
+        <h1>Operating Systems — Quick Cheat Sheet</h1>
+        <p>BCE26PE01  |  B.Tech Computer Engineering  |  Semester VI  |  Course Owner: Dr. Pravin S. Game  |  PCCoE Pune</p>
+      </div>
+    </div>
+    <div class="unit-pills">
+      <span class="unit-pill p1">Unit I: CPU Scheduling</span>
+      <span class="unit-pill p2">Unit II: Sync &amp; Deadlocks</span>
+      <span class="unit-pill p3">Unit III: Memory Mgmt</span>
+      <span class="unit-pill p4">Unit IV: File &amp; Disk</span>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <div class="grid">
+
+    <!-- ══════════════ UNIT I ══════════════ -->
+    <div class="card bg-u1">
+      <span class="ct ct1">Unit I — CPU Scheduling</span>
+
+      <p class="sh sh1">Process States (5-State Model)</p>
+      <div class="state-flow">
+        <div class="state-box">New</div>
+        <span class="s-arrow">→</span>
+        <div class="state-box">Ready</div>
+        <span class="s-arrow">→</span>
+        <div class="state-box">Running</div>
+        <span class="s-arrow">→</span>
+        <div class="state-box">Waiting</div>
+        <span class="s-arrow">→</span>
+        <div class="state-box">Terminated</div>
+      </div>
+      <ul class="cl cl1" style="margin-top:3px">
+        <li><strong>PCB</strong> – Stores PID, state, PC, registers, priority, memory info per process</li>
+        <li><strong>Context Switch</strong> – Save current PCB; load next PCB; overhead cost</li>
+        <li><strong>User Mode</strong> – Limited privileges; <strong>Kernel Mode</strong> – Full hardware access</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh1">Scheduling Algorithms</p>
+      <table class="mt">
+        <tr><th>Algorithm</th><th>Preemptive?</th><th>Key Metric</th><th>Drawback</th></tr>
+        <tr><td>FCFS</td><td>No</td><td>Simple, ordered</td><td>Convoy effect</td></tr>
+        <tr><td>SJF</td><td>No</td><td>Min avg wait</td><td>Starvation</td></tr>
+        <tr><td>SRTF</td><td>Yes</td><td>Best avg wait</td><td>High overhead</td></tr>
+        <tr><td>Priority</td><td>Both</td><td>Priority order</td><td>Starvation → use aging</td></tr>
+        <tr><td>Round Robin</td><td>Yes</td><td>Fair, time quantum</td><td>High context switches</td></tr>
+        <tr><td>MLFQ</td><td>Yes</td><td>Adaptive</td><td>Complex tuning</td></tr>
+      </table>
+
+      <hr class="dv">
+      <p class="sh shg">Key Formulas</p>
+      <div class="formula">
+        <span class="fvar">WT</span> = TAT − Burst &nbsp;&nbsp; <span class="flabel">// Waiting Time</span><br>
+        <span class="fvar">TAT</span> = Completion − Arrival &nbsp;&nbsp; <span class="flabel">// Turnaround Time</span><br>
+        <span class="fvar">RT</span> = First CPU − Arrival &nbsp;&nbsp; <span class="flabel">// Response Time</span><br>
+        <span class="fvar">Avg WT</span> = ΣWT / n &nbsp;&nbsp; <span class="flabel">// Average Waiting Time</span>
+      </div>
+
+      <hr class="dv">
+      <p class="sh sh1">OS Types Compared</p>
+      <ul class="cl cl1">
+        <li><strong>Multiprogramming</strong> – Multiple jobs in memory; max CPU use</li>
+        <li><strong>Multitasking</strong> – Fast context switching; interactive feel</li>
+        <li><strong>Multiprocessing</strong> – Multiple CPUs; true parallelism</li>
+        <li><strong>Time-sharing</strong> – Each user gets CPU slice (RR-based)</li>
+        <li><strong>Batch</strong> – No interaction; jobs queued &amp; processed</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ UNIT II ══════════════ -->
+    <div class="card bg-u2">
+      <span class="ct ct2">Unit II — Sync &amp; Deadlocks</span>
+
+      <p class="sh sh2">IPC Mechanisms</p>
+      <table class="mt">
+        <tr><th>Method</th><th>Speed</th><th>Best For</th></tr>
+        <tr><td>Shared Memory</td><td>Fast (no kernel)</td><td>Large data sharing</td></tr>
+        <tr><td>Message Passing</td><td>Slower (syscall)</td><td>Distributed systems</td></tr>
+        <tr><td>Pipes (ordinary)</td><td>Medium</td><td>Parent-child, unidirectional</td></tr>
+        <tr><td>Named Pipes</td><td>Medium</td><td>Unrelated processes, bidir</td></tr>
+      </table>
+
+      <hr class="dv">
+      <p class="sh sh2">Critical Section Requirements</p>
+      <div class="three-col" style="margin-top:3px">
+        <div style="background:var(--u2-l);border-radius:4px;padding:4px 5px;text-align:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:700;color:var(--u2);display:block">Mutual Exclusion</span>
+          <span style="font-size:7px;color:var(--muted)">Only 1 process in CS at a time</span>
+        </div>
+        <div style="background:var(--u2-l);border-radius:4px;padding:4px 5px;text-align:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:700;color:var(--u2);display:block">Progress</span>
+          <span style="font-size:7px;color:var(--muted)">Selection must happen in finite time</span>
+        </div>
+        <div style="background:var(--u2-l);border-radius:4px;padding:4px 5px;text-align:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:700;color:var(--u2);display:block">Bounded Wait</span>
+          <span style="font-size:7px;color:var(--muted)">Process waits a finite number of turns</span>
+        </div>
+      </div>
+
+      <hr class="dv">
+      <p class="sh sh2">Synchronization Tools</p>
+      <ul class="cl cl2">
+        <li><strong>Mutex Lock</strong> – Binary; acquire()/release(); busy-wait or block</li>
+        <li><strong>Semaphore</strong> – Counter; wait()/signal(); counting or binary</li>
+        <li><strong>Monitor</strong> – High-level; condition variables; Java synchronized</li>
+        <li><strong>test_and_set / CAS</strong> – Atomic hardware instructions for mutual exclusion</li>
+        <li><strong>Memory Barrier</strong> – Prevents instruction reordering by CPU/compiler</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh2">Classic Sync Problems</p>
+      <ul class="cl cl2">
+        <li><strong>Producer-Consumer</strong> – Bounded buffer; mutex + 2 semaphores (full/empty)</li>
+        <li><strong>Reader-Writer</strong> – Multiple readers OR one writer; readers-preference</li>
+        <li><strong>Dining Philosophers</strong> – 5 philosophers, 5 forks; deadlock-prone without care</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh2">Deadlock: 4 Necessary Conditions</p>
+      <div class="dc-grid">
+        <div class="dc-box"><span class="dc-name">Mutual Exclusion</span><span class="dc-desc">Resource held by only one process</span></div>
+        <div class="dc-box"><span class="dc-name">Hold &amp; Wait</span><span class="dc-desc">Holding resource while waiting for more</span></div>
+        <div class="dc-box"><span class="dc-name">No Preemption</span><span class="dc-desc">Resources can't be forcibly taken</span></div>
+        <div class="dc-box"><span class="dc-name">Circular Wait</span><span class="dc-desc">P1→R1→P2→R2→P1 cycle</span></div>
+      </div>
+
+      <hr class="dv">
+      <p class="sh sh2">Deadlock Strategies</p>
+      <ul class="cl cl2">
+        <li><strong>Prevention</strong> – Eliminate one of 4 conditions (e.g. ordered resource allocation)</li>
+        <li><strong>Avoidance</strong> – Banker's Algorithm; keep system in safe state</li>
+        <li><strong>Detection</strong> – Resource Allocation Graph; run periodically</li>
+        <li><strong>Recovery</strong> – Kill processes or preempt resources</li>
+        <li><strong>Aging</strong> – Gradually increase priority of waiting process → cures starvation</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ UNIT III ══════════════ -->
+    <div class="card bg-u3">
+      <span class="ct ct3">Unit III — Memory Management</span>
+
+      <p class="sh sh3">Memory Allocation Strategies</p>
+      <table class="mt">
+        <tr><th>Strategy</th><th>Picks</th><th>Fragment Type</th></tr>
+        <tr><td>First Fit</td><td>First sufficient hole</td><td>External</td></tr>
+        <tr><td>Best Fit</td><td>Smallest sufficient hole</td><td>External (small holes)</td></tr>
+        <tr><td>Worst Fit</td><td>Largest hole</td><td>External (large leftovers)</td></tr>
+      </table>
+      <ul class="cl cl3" style="margin-top:3px">
+        <li><strong>Internal Frag</strong> – Wasted space inside allocated partition</li>
+        <li><strong>External Frag</strong> – Enough total free memory but not contiguous</li>
+        <li><strong>Compaction</strong> – Shuffle memory to merge external fragments (costly)</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh3">Paging &amp; Segmentation</p>
+      <ul class="cl cl3">
+        <li><strong>Page</strong> – Fixed logical unit; <strong>Frame</strong> – Fixed physical unit (same size)</li>
+        <li><strong>Page Table</strong> – Maps page number → frame number; MMU translates</li>
+        <li><strong>TLB</strong> – Cache for page table; hit avoids full table lookup</li>
+        <li><strong>Segment</strong> – Variable-size logical unit (code, stack, heap)</li>
+        <li><strong>Virtual Memory</strong> – Execute process larger than physical RAM using demand paging</li>
+        <li><strong>Page Fault</strong> – Page not in RAM; OS loads from disk (heavy overhead)</li>
+        <li><strong>Thrashing</strong> – Too many page faults; CPU busy with swapping</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh3">Page Replacement Algorithms</p>
+      <div class="pr-grid">
+        <div class="pr-box pr-fifo">
+          <span class="pr-name">FIFO</span>
+          <span class="pr-desc">Replace oldest loaded page. Simple. Susceptible to Belady's anomaly.</span>
+        </div>
+        <div class="pr-box pr-lru">
+          <span class="pr-name">LRU</span>
+          <span class="pr-desc">Replace least recently used. Near-optimal. Needs timestamp/stack.</span>
+        </div>
+        <div class="pr-box pr-opt">
+          <span class="pr-name">Optimal</span>
+          <span class="pr-desc">Replace page used farthest in future. Theoretical benchmark only.</span>
+        </div>
+      </div>
+
+      <hr class="dv">
+      <p class="sh shg">Key Formulas</p>
+      <div class="formula">
+        <span class="fvar">EAT</span> = α(TLB+Mem) + (1−α)(TLB+2×Mem) &nbsp;<span class="flabel">// α=hit ratio</span><br>
+        <span class="fvar">EAT (PF)</span> = (1−p)×mem + p×page_fault_time &nbsp;<span class="flabel">// p=fault rate</span><br>
+        <span class="fvar">Phys Addr</span> = Frame# × PageSize + Offset
+      </div>
+    </div>
+
+    <!-- ══════════════ UNIT IV ══════════════ -->
+    <div class="card bg-u4 no-right">
+      <span class="ct ct4">Unit IV — File Systems &amp; Disk</span>
+
+      <p class="sh sh4">File Allocation Methods</p>
+      <table class="mt">
+        <tr><th>Method</th><th>Access</th><th>Pros</th><th>Cons</th></tr>
+        <tr><td>Contiguous</td><td>Sequential + Random</td><td>Fast read</td><td>External frag, hard to grow</td></tr>
+        <tr><td>Linked</td><td>Sequential only</td><td>No ext frag</td><td>Slow random; pointer overhead</td></tr>
+        <tr><td>Indexed</td><td>Direct + Random</td><td>No ext frag</td><td>Index block overhead</td></tr>
+      </table>
+
+      <hr class="dv">
+      <p class="sh sh4">Directory Structures</p>
+      <ul class="cl cl4">
+        <li><strong>Single-Level</strong> – All files in one dir; naming conflicts</li>
+        <li><strong>Two-Level</strong> – Separate dir per user; no sharing</li>
+        <li><strong>Tree-Structured</strong> – Hierarchical; paths; most common (Unix/Windows)</li>
+        <li><strong>Acyclic Graph</strong> – Shared files via links/aliases</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh4">Free Space Management</p>
+      <ul class="cl cl4">
+        <li><strong>Bitmap</strong> – 1 bit per block; efficient but large for big disks</li>
+        <li><strong>Linked List</strong> – Free blocks chained; no waste but slow traversal</li>
+        <li><strong>Grouping</strong> – Store n free blocks in first free block; faster</li>
+      </ul>
+
+      <hr class="dv">
+      <p class="sh sh4">Disk Scheduling Algorithms</p>
+      <table class="mt">
+        <tr><th>Algorithm</th><th>Strategy</th><th>Best When</th></tr>
+        <tr><td>FCFS</td><td>Serve in arrival order</td><td>Light load; fairness needed</td></tr>
+        <tr><td>SSTF</td><td>Nearest cylinder first</td><td>Heavy load; may starve far requests</td></tr>
+        <tr><td>SCAN</td><td>Sweep back &amp; forth (elevator)</td><td>Mixed load; no starvation</td></tr>
+        <tr><td>C-SCAN</td><td>One direction only; jump back</td><td>Uniform wait times</td></tr>
+      </table>
+      <div class="formula" style="margin-top:4px">
+        <span class="fvar">Total Movement</span> = Σ |curr_head − next_request| &nbsp;<span class="flabel">// sum of all seeks</span>
+      </div>
+
+      <hr class="dv">
+      <p class="sh shg">Banker's Algorithm (Avoidance)</p>
+      <ul class="cl cl4">
+        <li><strong>Need Matrix</strong> = Max − Allocation</li>
+        <li>Grant request only if system stays in <strong>safe state</strong> (safe sequence exists)</li>
+        <li>Safe state → deadlock free; Unsafe → possible deadlock</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ HOT EXAM QUESTIONS ══════════════ -->
+    <div class="hotq-bar span4">
+      <div class="hotq-title">⚡ Most Frequently Tested Questions (from QB + Sample Papers)</div>
+      <div class="hotq-grid">
+        <div class="hotq-item">
+          <strong>U-I: Scheduling Numericals</strong>
+          <span>Draw Gantt charts &amp; compute avg WT/TAT for SJF, RR (quantum=1 or 2), FCFS, and Priority — with given arrival &amp; burst times. Most repeated GATE questions.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-I: Preemptive vs Non-Preemptive</strong>
+          <span>Examine effects of preemptive vs non-preemptive scheduling on process states. Compare SRTF and FCFS for given process snapshots.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: Banker's Algorithm</strong>
+          <span>Given Allocation &amp; Max matrices + Available: calculate Need matrix. Determine if P2's resource request can be safely granted (safe sequence check).</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: Deadlock Detection</strong>
+          <span>Identify if pseudocode (P1:lock R1,R2; P2:lock R2,R3; P3:lock R3,R1) results in deadlock. Design deadlock-free version using prevention technique.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-III: Page Replacement</strong>
+          <span>Apply LRU, FIFO, OPT to reference string (e.g. 7,0,1,2,0,3,0,4,2,3…) with 3 frames. Count page faults for each. Show all steps clearly.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-III: TLB / EAT Calculation</strong>
+          <span>Given TLB access time (25ns), memory time (150ns), hit ratio (85%) — calculate Effective Access Time. Also: page fault EAT with disk access time.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-IV: Disk Scheduling</strong>
+          <span>Given request queue + initial head position — compute total cylinder movement for FCFS, SSTF, SCAN, and C-SCAN. Compare and justify best algorithm for scenario.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-IV: File Allocation &amp; Free Space</strong>
+          <span>Compare contiguous, linked, indexed file allocation. Calculate internal fragmentation (linked allocation with pointer overhead). Bitmap vs. linked list free space tracking.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Course: Operating Systems &nbsp;|&nbsp; Code: <span class="acc">BCE26PE01</span> &nbsp;|&nbsp; Credits: 3 &nbsp;|&nbsp; PCCoE Pune &nbsp;|&nbsp; AY 2025–26 Sem II</span>
+    <span>Units I–IV &nbsp;•&nbsp; COs: Scheduling | Sync | Memory | Disk &nbsp;•&nbsp; <span class="acc">FA1 + FA2 + SA (50 marks)</span></span>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX Design Cheat Sheet | BCE26PE03</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #fdf6ee;
+    --surface:  #fff9f2;
+    --surface2: #fff3e6;
+    --border:   #e8d8c4;
+    --ink:      #1c1209;
+    --muted:    #8c7460;
+    --a1: #c84b00;   /* burnt orange */
+    --a2: #0074a6;   /* ink blue */
+    --a3: #0e7c4a;   /* forest green */
+    --a4: #7a1fa2;   /* plum */
+    --a5: #b5860d;   /* gold */
+    --mono: 'DM Mono', monospace;
+    --display: 'Playfair Display', serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 10.5px;
+    line-height: 1.45;
+    width: 297mm;
+    min-height: 210mm;
+    padding: 7px 10px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--a1);
+    padding-bottom: 5px;
+    margin-bottom: 7px;
+  }
+  header h1 {
+    font-family: var(--display); font-size: 34px;
+    color: var(--a1); line-height: 1; letter-spacing: -1px;
+  }
+  header .subtitle {
+    font-family: var(--body); font-size: 10px;
+    color: var(--muted); margin-left: 10px; margin-bottom: 2px;
+  }
+  header .title-row { display: flex; align-items: baseline; gap: 8px; }
+  .tags { display: flex; gap: 5px; align-items: center; }
+  .tag {
+    font-family: var(--mono); font-size: 8px; font-weight: 500;
+    border: 1.5px solid; padding: 1px 7px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: .4px;
+  }
+  .t1 { border-color: var(--a1); color: var(--a1); }
+  .t2 { border-color: var(--a2); color: var(--a2); }
+  .t3 { border-color: var(--a3); color: var(--a3); }
+  .t4 { border-color: var(--a4); color: var(--a4); }
+
+  /* ── GRID ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+  .col2 { grid-column: span 2; }
+  .col1 { grid-column: span 1; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    position: relative;
+  }
+  .card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    border-radius: 0 0 6px 6px;
+    opacity: .35;
+  }
+  .card.c1::after { background: var(--a1); }
+  .card.c2::after { background: var(--a2); }
+  .card.c3::after { background: var(--a3); }
+  .card.c4::after { background: var(--a4); }
+  .card.c5::after { background: var(--a5); }
+
+  .card-title {
+    font-family: var(--display); font-size: 13px;
+    margin-bottom: 5px; display: flex; align-items: center; gap: 5px;
+    letter-spacing: -.3px;
+  }
+  .card-title.orange { color: var(--a1); }
+  .card-title.blue   { color: var(--a2); }
+  .card-title.green  { color: var(--a3); }
+  .card-title.purple { color: var(--a4); }
+  .card-title.gold   { color: var(--a5); }
+
+  /* ── SECTION LABEL ── */
+  .sl {
+    font-family: var(--mono); font-size: 7.5px; font-weight: 500;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid var(--border); padding-bottom: 1px;
+    margin: 4px 0 2px;
+  }
+
+  p, li { font-size: 10.5px; line-height: 1.4; }
+  ul { padding-left: 12px; }
+  li { margin-bottom: 1px; }
+
+  code {
+    font-family: var(--mono); font-size: 9.5px;
+    background: var(--surface2); color: var(--a1);
+    padding: 0 3px; border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .def {
+    background: var(--surface2); border-left: 3px solid var(--a1);
+    padding: 3px 7px; border-radius: 0 3px 3px 0;
+    font-size: 10px; margin: 3px 0;
+    font-style: italic; color: var(--ink);
+  }
+
+  /* ── PILL ── */
+  .pill {
+    font-family: var(--mono); font-size: 8px; font-weight: 500;
+    padding: 1px 6px; border-radius: 20px;
+    border: 1px solid; white-space: nowrap;
+  }
+  .p-or { color: var(--a1); border-color: var(--a1); background: rgba(200,75,0,.06); }
+  .p-bl { color: var(--a2); border-color: var(--a2); background: rgba(0,116,166,.06); }
+  .p-gr { color: var(--a3); border-color: var(--a3); background: rgba(14,124,74,.06); }
+  .p-pu { color: var(--a4); border-color: var(--a4); background: rgba(122,31,162,.06); }
+  .p-go { color: var(--a5); border-color: var(--a5); background: rgba(181,134,13,.06); }
+
+  /* ── ROW ── */
+  .row { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2.5px; }
+  .row-label {
+    font-weight: 700; font-size: 10px; min-width: 78px;
+    color: var(--ink); flex-shrink: 0; padding-top: 1px;
+  }
+  .row-body { font-size: 10px; color: var(--muted); flex: 1; }
+
+  /* ── DESIGN THINKING FLOW ── */
+  .dt-flow {
+    display: flex; gap: 2px; align-items: stretch; margin: 4px 0;
+  }
+  .dt-step {
+    flex: 1; text-align: center; padding: 4px 3px;
+    border-radius: 4px; position: relative;
+  }
+  .dt-step + .dt-step::before {
+    content: '›';
+    position: absolute; left: -6px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 12px; font-weight: 700;
+  }
+  .dt-num { font-family: var(--display); font-size: 14px; line-height: 1; }
+  .dt-name { font-weight: 700; font-size: 9px; display: block; margin-top: 1px; }
+  .dt-goal { font-size: 8.5px; color: var(--muted); margin-top: 1px; line-height: 1.2; }
+
+  /* ── NIELSEN HEURISTICS ── */
+  .nh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .nh-item { display: flex; gap: 4px; align-items: flex-start; }
+  .nh-num {
+    font-family: var(--mono); font-size: 8px; font-weight: 500;
+    background: var(--a2); color: #fff;
+    width: 14px; height: 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .nh-text { font-size: 9.5px; line-height: 1.3; }
+  .nh-text strong { font-size: 9.5px; display: block; }
+  .nh-text span { color: var(--muted); font-size: 8.5px; }
+
+  /* ── QB QUESTIONS ── */
+  .qb-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .kq-item {
+    display: flex; gap: 4px; align-items: flex-start; margin-bottom: 2.5px;
+  }
+  .kq-star {
+    font-size: 9px; font-weight: 700; flex-shrink: 0;
+    width: 14px; text-align: center; padding-top: 1px;
+  }
+  .s-hi { color: var(--a1); }
+  .s-med { color: var(--a5); }
+  .kq-text { font-size: 9.5px; line-height: 1.35; }
+
+  /* ── WIREFRAME TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th {
+    font-family: var(--mono); font-size: 7.5px; font-weight: 500;
+    background: var(--surface2); color: var(--muted);
+    padding: 2px 5px; text-align: left; text-transform: uppercase;
+    letter-spacing: .5px; border-bottom: 1.5px solid var(--border);
+  }
+  td { padding: 2px 5px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .td-name { font-weight: 700; }
+
+  /* ── TOOLS GRID ── */
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .tool-item {
+    display: flex; gap: 4px; align-items: flex-start;
+    background: var(--surface2); border-radius: 4px;
+    padding: 3px 5px; border: 1px solid var(--border);
+  }
+  .tool-icon { font-size: 13px; flex-shrink: 0; }
+  .tool-name { font-weight: 700; font-size: 10px; display: block; }
+  .tool-desc { font-size: 9px; color: var(--muted); }
+
+  /* ── COMPARE TABLE ── */
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .cmp-col { background: var(--surface2); border-radius: 4px; padding: 4px 6px; border: 1px solid var(--border); }
+  .cmp-head { font-weight: 700; font-size: 10.5px; margin-bottom: 2px; }
+
+  /* ── FOOTER ── */
+  footer {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1.5px solid var(--border); padding-top: 4px; margin-top: 5px;
+    font-family: var(--mono); font-size: 8px; color: var(--muted);
+  }
+  .footer-units { display: flex; gap: 12px; }
+  .fu { display: flex; align-items: center; gap: 4px; }
+  .fu-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  @media print {
+    body { width: 297mm; padding: 5px 8px; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div>
+    <div class="title-row">
+      <h1>UI / UX Design</h1>
+      <div class="subtitle">BCE26PE03 · Sem VI · B.Tech Computer Engineering · PCCoE Pune</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag t1">Unit 1 · Intro &amp; Design Thinking</span>
+    <span class="tag t2">Unit 2 · Research &amp; Personas</span>
+    <span class="tag t3">Unit 3 · Visual Design &amp; Systems</span>
+    <span class="tag t4">Unit 4 · Prototyping &amp; Testing</span>
+  </div>
+</header>
+
+<!-- GRID -->
+<div class="grid">
+
+  <!-- ══ CARD 1: UI vs UX ══ -->
+  <div class="card c1 col1">
+    <div class="card-title orange">① UI vs UX</div>
+    <div class="cmp">
+      <div class="cmp-col">
+        <div class="cmp-head" style="color:var(--a1)">UI — User Interface</div>
+        <ul>
+          <li>Visual elements: buttons, icons, colors, typography, layouts</li>
+          <li>How the product <strong>looks</strong></li>
+          <li>Concerns individual screens &amp; elements</li>
+          <li>Subset of UX</li>
+        </ul>
+      </div>
+      <div class="cmp-col">
+        <div class="cmp-head" style="color:var(--a2)">UX — User Experience</div>
+        <ul>
+          <li>Overall feeling, ease, satisfaction of the journey</li>
+          <li>How the product <strong>works &amp; feels</strong></li>
+          <li>Covers end-to-end user journey</li>
+          <li>Encompasses UI</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:4px;font-size:9.5px;color:var(--muted)"><strong>Example:</strong> Banking app — beautiful login screen = good UI. 10-step transfer = bad UX.</p>
+    <div class="sl">Human-Centered Design (HCD) Principles</div>
+    <div class="row"><span class="row-label">Empathy First</span><span class="row-body">Understand users' goals, frustrations &amp; context before designing</span></div>
+    <div class="row"><span class="row-label">User Involvement</span><span class="row-body">Real users participate at every stage — research to testing</span></div>
+    <div class="row"><span class="row-label">Iterative</span><span class="row-body">Prototype → test → gather feedback → redesign repeatedly</span></div>
+  </div>
+
+  <!-- ══ CARD 2: Design Thinking ══ -->
+  <div class="card c1 col1">
+    <div class="card-title orange">① Design Thinking Process</div>
+    <div class="dt-flow">
+      <div class="dt-step" style="background:#fdf0e8;border:1px solid #f5cba0">
+        <div class="dt-num" style="color:var(--a1)">1</div>
+        <span class="dt-name">Empathize</span>
+        <div class="dt-goal">Understand users via interviews, observation</div>
+      </div>
+      <div class="dt-step" style="background:#eaf3fb;border:1px solid #9dcfec">
+        <div class="dt-num" style="color:var(--a2)">2</div>
+        <span class="dt-name">Define</span>
+        <div class="dt-goal">Synthesize into POV problem statement</div>
+      </div>
+      <div class="dt-step" style="background:#edf7f1;border:1px solid #9dd5b5">
+        <div class="dt-num" style="color:var(--a3)">3</div>
+        <span class="dt-name">Ideate</span>
+        <div class="dt-goal">Brainstorm many creative solutions</div>
+      </div>
+      <div class="dt-step" style="background:#f5eefb;border:1px solid #c8a4e0">
+        <div class="dt-num" style="color:var(--a4)">4</div>
+        <span class="dt-name">Prototype</span>
+        <div class="dt-goal">Build low-cost scaled-down versions</div>
+      </div>
+      <div class="dt-step" style="background:#fdf9e8;border:1px solid #e5d07a">
+        <div class="dt-num" style="color:var(--a5)">5</div>
+        <span class="dt-name">Test</span>
+        <div class="dt-goal">Try with real users, gather feedback, iterate</div>
+      </div>
+    </div>
+    <div class="sl">Ideation Techniques</div>
+    <div class="row"><span class="row-label">Mind Mapping</span><span class="row-body">Visual branching of ideas from central problem</span></div>
+    <div class="row"><span class="row-label">Crazy 8s</span><span class="row-body">8 UI sketches in 8 minutes — speed &amp; creative risk</span></div>
+    <div class="row"><span class="row-label">Affinity Diagram</span><span class="row-body">Cluster related ideas into themes for prioritisation</span></div>
+    <div class="sl">Define Stage Deliverable</div>
+    <p><strong>POV Statement:</strong> [User] needs [need] because [insight]</p>
+  </div>
+
+  <!-- ══ CARD 3: User Research Techniques ══ -->
+  <div class="card c2 col1">
+    <div class="card-title blue">② User Research Techniques</div>
+    <table>
+      <thead>
+        <tr><th>Technique</th><th>Type</th><th>Data</th><th>When to Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-name">Interviews</td><td><span class="pill p-or">Qualitative</span></td><td>Deep motivations, feelings, opinions</td><td>Early discovery phase</td></tr>
+        <tr><td class="td-name">Surveys / Forms</td><td><span class="pill p-bl">Quantitative</span></td><td>Large-scale patterns, ratings, frequencies</td><td>Quick feedback, limited budget</td></tr>
+        <tr><td class="td-name">Contextual Inquiry</td><td><span class="pill p-or">Qualitative</span></td><td>Real behavior in natural environment</td><td>Observing actual usage (ATM, kiosk)</td></tr>
+        <tr><td class="td-name">Focus Groups</td><td><span class="pill p-or">Qualitative</span></td><td>Group opinions, discussion themes</td><td>Concept testing, feature ideas</td></tr>
+        <tr><td class="td-name">Usability Testing</td><td><span class="pill p-gr">Both</span></td><td>Task success rates, errors, time-on-task</td><td>Evaluating existing prototype/product</td></tr>
+        <tr><td class="td-name">A/B Testing</td><td><span class="pill p-bl">Quantitative</span></td><td>Conversion rates between 2 variants</td><td>Comparing design alternatives</td></tr>
+        <tr><td class="td-name">Eye Tracking</td><td><span class="pill p-bl">Quantitative</span></td><td>Gaze patterns, attention heatmaps</td><td>Layout &amp; visual hierarchy validation</td></tr>
+        <tr><td class="td-name">Diary Studies</td><td><span class="pill p-or">Qualitative</span></td><td>Longitudinal user behaviors over time</td><td>Long-term product usage patterns</td></tr>
+      </tbody>
+    </table>
+    <div class="sl">Interview vs Survey</div>
+    <div class="cmp">
+      <div class="cmp-col">
+        <div class="cmp-head" style="color:var(--a1);font-size:9.5px">Interviews ✓</div>
+        <ul style="font-size:9.5px"><li>Deep qualitative insights (Why?)</li><li>Follow-up probing questions</li><li>Small sample, high quality</li></ul>
+      </div>
+      <div class="cmp-col">
+        <div class="cmp-head" style="color:var(--a2);font-size:9.5px">Surveys ✓</div>
+        <ul style="font-size:9.5px"><li>Fast &amp; scalable (100s of users)</li><li>Quantifiable data patterns</li><li>Low cost, no scheduling</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CARD 4: Personas, Empathy Map, Journey Map ══ -->
+  <div class="card c2 col1">
+    <div class="card-title blue">② Personas · Empathy Map · Journey Map</div>
+    <div class="sl">User Persona (4 Key Elements)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px">
+      <div class="row"><span class="pill p-bl">Name + Demographics</span><span style="font-size:9.5px;margin-left:4px">Age, occupation, tech-savviness</span></div>
+      <div class="row"><span class="pill p-gr">Goals</span><span style="font-size:9.5px;margin-left:4px">What they want to achieve</span></div>
+      <div class="row"><span class="pill p-or">Frustrations</span><span style="font-size:9.5px;margin-left:4px">Pain points &amp; blockers</span></div>
+      <div class="row"><span class="pill p-pu">Behaviors</span><span style="font-size:9.5px;margin-left:4px">Patterns of use &amp; habits</span></div>
+    </div>
+
+    <div class="sl">Empathy Map (4 Quadrants)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2px;margin:2px 0">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px;text-align:center;font-size:9px"><strong>Says</strong><br><span style="color:var(--muted)">Quotes &amp; statements</span></div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px;text-align:center;font-size:9px"><strong>Thinks</strong><br><span style="color:var(--muted)">Inner thoughts</span></div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px;text-align:center;font-size:9px"><strong>Does</strong><br><span style="color:var(--muted)">Actions &amp; behaviors</span></div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px;text-align:center;font-size:9px"><strong>Feels</strong><br><span style="color:var(--muted)">Emotions &amp; reactions</span></div>
+    </div>
+
+    <div class="sl">User Journey Map (5 Key Elements)</div>
+    <div class="row"><span class="row-label">Stages</span><span class="row-body">Phases of the user experience (Discover → Buy → Support)</span></div>
+    <div class="row"><span class="row-label">Actions</span><span class="row-body">What user does at each stage</span></div>
+    <div class="row"><span class="row-label">Emotions</span><span class="row-body">Emotional highs &amp; lows — often a sentiment curve</span></div>
+    <div class="row"><span class="row-label">Touchpoints</span><span class="row-body">Channels where user interacts (app, email, kiosk)</span></div>
+    <div class="row"><span class="row-label">Pain Points</span><span class="row-body">Problems encountered at each stage → opportunities</span></div>
+
+    <div class="sl">Task Flow Components</div>
+    <p style="font-size:9.5px"><strong>Start</strong> → Steps → Decision Points (◆) → <strong>End</strong> &nbsp;|&nbsp; Used by: cab booking, checkout, kiosk</p>
+  </div>
+
+  <!-- ══ CARD 5: Visual Design Principles ══ -->
+  <div class="card c3 col1">
+    <div class="card-title green">③ Visual Design Principles</div>
+    <div class="row"><span class="row-label">Hierarchy</span><span class="row-body">Size, contrast, weight to show importance · "Emergency" > "View History"</span></div>
+    <div class="row"><span class="row-label">Consistency</span><span class="row-body">Same buttons, colors, fonts across all screens &amp; modules</span></div>
+    <div class="row"><span class="row-label">Feedback</span><span class="row-body">Loading spinners, confirmations, error messages after every action</span></div>
+    <div class="row"><span class="row-label">Accessibility</span><span class="row-body">WCAG contrast ratios, labels, alt text, avoid color-only cues</span></div>
+    <div class="row"><span class="row-label">Typography</span><span class="row-body">Font hierarchy: Heading → Sub → Body → Caption; max 2–3 families</span></div>
+    <div class="row"><span class="row-label">Color</span><span class="row-body">Primary + Secondary + Accent palette; harmony &amp; contrast (4.5:1 min)</span></div>
+    <div class="row"><span class="row-label">Spacing</span><span class="row-body">8-pt grid; whitespace creates grouping &amp; breathing room</span></div>
+    <div class="row"><span class="row-label">Iconography</span><span class="row-body">Uniform style (flat/outlined); label icons for clarity; avoid ambiguity</span></div>
+
+    <div class="sl">Design Systems</div>
+    <div class="row"><span class="pill p-gr">Atomic Design</span><span style="font-size:9.5px;margin-left:4px">Atoms → Molecules → Organisms → Templates → Pages</span></div>
+    <div class="row"><span class="pill p-bl">Material Design</span><span style="font-size:9.5px;margin-left:4px">Google's system: elevation, motion, grid, components</span></div>
+    <p style="font-size:9.5px;margin-top:2px;color:var(--muted)">Design systems ensure consistency &amp; speed across teams. Shared components = no module-by-module redesign.</p>
+  </div>
+
+  <!-- ══ CARD 6: Wireframes ══ -->
+  <div class="card c3 col1">
+    <div class="card-title green">③ Wireframing</div>
+    <p style="font-size:10px;margin-bottom:4px"><em>Blueprint of digital product — layout &amp; structure without visual styling</em></p>
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Detail</th><th>Content</th><th>Tool</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill p-or">Low-Fi</span></td>
+          <td>Minimal</td><td>Placeholders only</td>
+          <td>Paper, Balsamiq</td><td>Early ideation &amp; quick validation</td>
+        </tr>
+        <tr>
+          <td><span class="pill p-go">Mid-Fi</span></td>
+          <td>Structured</td><td>Lorem Ipsum text</td>
+          <td>Figma (basic)</td><td>Content layout &amp; navigation flow</td>
+        </tr>
+        <tr>
+          <td><span class="pill p-gr">High-Fi</span></td>
+          <td>Detailed</td><td>Real content + colors</td>
+          <td>Figma, Adobe XD</td><td>Usability testing &amp; handoff</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sl">Why Wireframe? (7 Benefits)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px">
+      <li style="font-size:9.5px">Defines layout &amp; information hierarchy</li>
+      <li style="font-size:9.5px">Identifies UX problems early</li>
+      <li style="font-size:9.5px">Saves dev time &amp; cost</li>
+      <li style="font-size:9.5px">Facilitates team collaboration</li>
+      <li style="font-size:9.5px">Stakeholder approval before build</li>
+      <li style="font-size:9.5px">Clarifies navigation structure</li>
+    </div>
+    <p style="font-size:9px;color:var(--a1);margin-top:3px">⚠ Skipping wireframes → frequent redesigns &amp; developer confusion</p>
+  </div>
+
+  <!-- ══ CARD 7: Prototyping & Tools ══ -->
+  <div class="card c4 col1">
+    <div class="card-title purple">④ Prototyping &amp; Tools</div>
+    <p style="font-size:10px;margin-bottom:3px"><em>Visual + interactive representation of a product — simulates clicks, navigation, scrolling</em></p>
+    <div class="tools">
+      <div class="tool-item">
+        <div class="tool-icon">🎨</div>
+        <div><span class="tool-name">Figma</span><span class="tool-desc">Cloud-based · real-time collab · wire to hi-fi · interactive prototypes · Inspect panel · plugins</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">✏️</div>
+        <div><span class="tool-name">Penpot</span><span class="tool-desc">Open-source · SVG-based · design &amp; prototyping · self-hostable</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">📐</div>
+        <div><span class="tool-name">Adobe XD</span><span class="tool-desc">Vector UI design · interactive prototypes · stakeholder sharing</span></div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-icon">🔌</div>
+        <div><span class="tool-name">Anima Plugin</span><span class="tool-desc">Figma → React/HTML/CSS code export · design-to-code handoff</span></div>
+      </div>
+    </div>
+    <div class="sl">Developer Handoff</div>
+    <div class="row"><span class="pill p-pu">Figma Inspect</span><span style="font-size:9.5px;margin-left:4px">Extracts spacing, colors, fonts, assets for dev</span></div>
+    <div class="row"><span class="pill p-pu">Design Tokens</span><span style="font-size:9.5px;margin-left:4px">Named variables (color-primary, spacing-8) → consistent code</span></div>
+    <div class="row"><span class="pill p-pu">Anima / Zeplin</span><span style="font-size:9.5px;margin-left:4px">Auto-generate HTML/CSS from Figma frames</span></div>
+  </div>
+
+  <!-- ══ CARD 8: Nielsen's 10 Heuristics ══ -->
+  <div class="card c2 col1">
+    <div class="card-title blue">④ Nielsen's 10 Usability Heuristics</div>
+    <div class="nh-grid">
+      <div class="nh-item"><div class="nh-num">1</div><div class="nh-text"><strong>Visibility of System Status</strong><span>Always inform users what's happening — loading spinner, progress bar</span></div></div>
+      <div class="nh-item"><div class="nh-num">2</div><div class="nh-text"><strong>Match Real World</strong><span>Use familiar language &amp; concepts, not system jargon</span></div></div>
+      <div class="nh-item"><div class="nh-num">3</div><div class="nh-text"><strong>User Control &amp; Freedom</strong><span>Clear undo/redo, "Cancel" options — emergency exits</span></div></div>
+      <div class="nh-item"><div class="nh-num">4</div><div class="nh-text"><strong>Consistency &amp; Standards</strong><span>Same words/actions mean same thing everywhere</span></div></div>
+      <div class="nh-item"><div class="nh-num">5</div><div class="nh-text"><strong>Error Prevention</strong><span>Design to avoid problems before they occur</span></div></div>
+      <div class="nh-item"><div class="nh-num">6</div><div class="nh-text"><strong>Recognition not Recall</strong><span>Visible options &gt; memorizing commands</span></div></div>
+      <div class="nh-item"><div class="nh-num">7</div><div class="nh-text"><strong>Flexibility &amp; Efficiency</strong><span>Shortcuts for expert users; adaptable for novices</span></div></div>
+      <div class="nh-item"><div class="nh-num">8</div><div class="nh-text"><strong>Aesthetic &amp; Minimal</strong><span>Irrelevant information competes with relevant ones</span></div></div>
+      <div class="nh-item"><div class="nh-num">9</div><div class="nh-text"><strong>Error Recovery</strong><span>Plain-language errors + constructive fix suggestions</span></div></div>
+      <div class="nh-item"><div class="nh-num">10</div><div class="nh-text"><strong>Help &amp; Documentation</strong><span>Easy-to-search support when needed</span></div></div>
+    </div>
+    <div class="sl">Heuristic Evaluation Process</div>
+    <p style="font-size:9.5px">3–5 UX experts · No real users · Map issues to heuristic · Severity 0–4 · Quick &amp; low-cost</p>
+    <p style="font-size:9px;color:var(--muted)">Severity: 0=no issue · 1=cosmetic · 2=minor · 3=major · 4=catastrophic</p>
+  </div>
+
+  <!-- ══ CARD 9: Usability Testing ══ -->
+  <div class="card c4 col1">
+    <div class="card-title purple">④ Usability Testing</div>
+    <p style="font-size:10px;margin-bottom:3px"><em>Observe real users completing tasks to find confusion, errors &amp; navigation issues</em></p>
+    <div class="sl">Types of Usability Testing</div>
+    <div class="row"><span class="pill p-pu">Moderated</span><span style="font-size:9.5px;margin-left:4px">Facilitator present · asks follow-up questions</span></div>
+    <div class="row"><span class="pill p-or">Unmoderated</span><span style="font-size:9.5px;margin-left:4px">User works independently · records screen</span></div>
+    <div class="row"><span class="pill p-bl">Remote</span><span style="font-size:9.5px;margin-left:4px">Online via Zoom · users from different cities</span></div>
+    <div class="row"><span class="pill p-gr">In-Person</span><span style="font-size:9.5px;margin-left:4px">Lab observation · direct eye tracking</span></div>
+    <div class="row"><span class="pill p-go">Comparative</span><span style="font-size:9.5px;margin-left:4px">Version A vs B · find better design</span></div>
+
+    <div class="sl">Testing Methods</div>
+    <div class="row"><span class="row-label">Think-Aloud</span><span class="row-body">User speaks thoughts → reveals confusion</span></div>
+    <div class="row"><span class="row-label">Task-Based</span><span class="row-body">Specific tasks → measure success rate &amp; time</span></div>
+    <div class="row"><span class="row-label">A/B Testing</span><span class="row-body">Two variants → conversion data</span></div>
+    <div class="row"><span class="row-label">Eye Tracking</span><span class="row-body">Gaze heatmaps → improve layout</span></div>
+
+    <div class="sl">Front-End Basics</div>
+    <div class="row"><span class="pill p-or">HTML</span><span style="font-size:9.5px;margin-left:4px">Structure &amp; semantic elements</span></div>
+    <div class="row"><span class="pill p-bl">CSS</span><span style="font-size:9.5px;margin-left:4px">Visual appearance, Flexbox, Grid, responsive</span></div>
+    <p style="font-size:9px;color:var(--muted)">Flexbox = rows/cols · Grid = 2D layouts · Media queries = breakpoints (mobile/tablet/desktop)</p>
+  </div>
+
+  <!-- ══ CARD 10: High-Freq QB Questions ══ -->
+  <div class="card c1 col2">
+    <div class="card-title orange">Exam-Frequent Question Bank Patterns</div>
+    <div class="qb-col">
+      <div>
+        <div class="sl" style="color:var(--a1)">Unit 1 — Must Know</div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Distinguish UI vs UX with 2 differences &amp; mobile app examples</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Apply 5-stage Design Thinking to e-commerce site with 65% cart abandonment</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Analyze healthcare portal: distinguish UI issue vs UX issue for elderly patients</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Describe HCD — 3 core principles + examples in digital product design</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Design UX flow for investment app (first-time investors, low financial literacy)</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Evaluate role of UX in system architecture for hospital management system</span></div>
+
+        <div class="sl" style="color:var(--a2)">Unit 2 — Must Know</div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Construct a persona for a fitness centre app (name, goals, frustrations, behavior)</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Construct survey (5 questions) for university library portal navigation issues</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Construct task flow: food court self-order kiosk from item selection to payment</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Construct user journey for cab booking: app install → ride completion (5 stages)</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Construct journey map for telemedicine app (4 stages + 1 pain point each)</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Smart city app: evaluate surveys vs field observation — which is more effective?</span></div>
+      </div>
+      <div>
+        <div class="sl" style="color:var(--a3)">Unit 3 — Must Know</div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">UPI app: no feedback on failed transaction → apply feedback &amp; system status fix</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Hospital portal: equal-size buttons for critical vs normal alerts → fix visual hierarchy</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Analytics dashboard: no grouping/hierarchy → design improved layout using principles</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Atomic design: organize atoms→molecules→organisms for a login screen</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Hospital app inconsistent layouts → explain how design systems improve uniformity</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Mid-fidelity wireframe for hospital appointment booking (doctor selection + date/time)</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Construct typography system: hierarchy, font sizes, styles for university web portal</span></div>
+
+        <div class="sl" style="color:var(--a4)">Unit 4 — Must Know</div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Apply heuristic evaluation to mobile banking app with fund transfer errors</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Design complete prototyping &amp; usability testing plan for telemedicine rural app</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Apply Flexbox/Grid to responsive news portal HTML/CSS layout (mobile/tablet/desktop)</span></div>
+        <div class="kq-item"><span class="kq-star s-hi">★</span><span class="kq-text">Describe heuristic evaluation using Nielsen's heuristics — process &amp; severity rating</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Evaluate Figma interactive prototyping vs paper prototypes (speed, fidelity, stakeholder)</span></div>
+        <div class="kq-item"><span class="kq-star s-med">◆</span><span class="kq-text">Usability test: users took 4 min for 3-step checkout → identify bottlenecks &amp; HTML/CSS fix</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;font-size:9px;color:var(--muted);font-family:var(--mono);align-items:center">
+      <span style="color:var(--a1)">★ High priority (appears in multiple papers)</span>
+      <span style="color:var(--a5)">◆ Medium — scenario-based HOTS</span>
+      <span>· Draw diagrams where asked (Persona, Empathy Map, Journey Map, Task Flow, Wireframe)</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-units">
+    <div class="fu"><div class="fu-dot" style="background:var(--a1)"></div>U1: Intro &amp; Design Thinking (8 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--a2)"></div>U2: Research &amp; Personas (8 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--a3)"></div>U3: Visual Design &amp; Systems (7 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--a4)"></div>U4: Prototyping &amp; Testing (7 hrs)</div>
+  </div>
+  <div>Marks: FA1(10) + FA2(10) + SA(30) + TW(50) = 100 &nbsp;|&nbsp; BCE26PE03 · UI/UX Design Cheat Sheet</div>
+</footer>
+
+</body>
+</html>

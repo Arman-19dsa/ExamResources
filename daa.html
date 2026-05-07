@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAA Cheat Sheet | BCE26PC02</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111419;
+    --border: #1e2430;
+    --accent1: #00e5ff;
+    --accent2: #ff4d6d;
+    --accent3: #b8ff57;
+    --accent4: #ffb703;
+    --accent5: #c77dff;
+    --text: #e2e8f0;
+    --muted: #6b7a96;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body: 'Barlow Condensed', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 11.5px;
+    line-height: 1.45;
+    width: 297mm;
+    min-height: 210mm;
+    padding: 8px 10px;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--accent1);
+    padding-bottom: 5px;
+    margin-bottom: 7px;
+    gap: 10px;
+  }
+  header .title-block { display: flex; align-items: baseline; gap: 10px; }
+  header h1 { font-family: var(--display); font-size: 36px; letter-spacing: 2px; color: var(--accent1); line-height: 1; }
+  header .sub { font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  header .badge {
+    font-family: var(--mono); font-size: 9px;
+    background: var(--accent2); color: #fff;
+    padding: 2px 8px; border-radius: 2px; font-weight: 700;
+  }
+  header .tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tag {
+    font-family: var(--mono); font-size: 8.5px;
+    border: 1px solid; padding: 1px 6px; border-radius: 2px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .t1 { border-color: var(--accent1); color: var(--accent1); }
+  .t2 { border-color: var(--accent2); color: var(--accent2); }
+  .t3 { border-color: var(--accent3); color: var(--accent3); }
+  .t4 { border-color: var(--accent4); color: var(--accent4); }
+  .t5 { border-color: var(--accent5); color: var(--accent5); }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .col2 { grid-column: span 2; }
+  .col1 { grid-column: span 1; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .card.c1::before { background: var(--accent1); }
+  .card.c2::before { background: var(--accent2); }
+  .card.c3::before { background: var(--accent3); }
+  .card.c4::before { background: var(--accent4); }
+  .card.c5::before { background: var(--accent5); }
+
+  .card-title {
+    font-family: var(--display);
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-title.cyan  { color: var(--accent1); }
+  .card-title.red   { color: var(--accent2); }
+  .card-title.green { color: var(--accent3); }
+  .card-title.gold  { color: var(--accent4); }
+  .card-title.purple { color: var(--accent5); }
+
+  /* ── CONTENT ── */
+  .section-label {
+    font-family: var(--mono); font-size: 8px;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+    margin: 4px 0 2px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+  }
+  p, li { font-size: 10.5px; color: var(--text); font-family: var(--body); line-height: 1.4; }
+  ul { padding-left: 12px; }
+  li { margin-bottom: 1px; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent3);
+    background: rgba(184,255,87,.08);
+    padding: 0 3px;
+    border-radius: 2px;
+  }
+
+  .formula {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent4);
+    background: rgba(255,183,3,.07);
+    border: 1px solid rgba(255,183,3,.2);
+    border-radius: 3px;
+    padding: 3px 7px;
+    margin: 3px 0;
+    display: block;
+    letter-spacing: .3px;
+  }
+
+  /* ── COMPLEXITY TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    background: rgba(255,255,255,.04);
+    color: var(--muted); padding: 2px 5px;
+    text-align: left; text-transform: uppercase; letter-spacing: .5px;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 2px 5px; font-family: var(--mono); font-size: 9.5px; border-bottom: 1px solid rgba(255,255,255,.03); }
+  tr:last-child td { border-bottom: none; }
+  .best { color: var(--accent3); }
+  .avg  { color: var(--accent4); }
+  .worst{ color: var(--accent2); }
+  .name-col { color: var(--text); font-weight: 700; }
+
+  /* ── MASTER THEOREM BOX ── */
+  .mt-cases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin-top: 4px; }
+  .mt-case {
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 4px 6px;
+    text-align: center;
+  }
+  .mt-case .cnum { font-family: var(--display); font-size: 12px; color: var(--muted); }
+  .mt-case .cond { font-family: var(--mono); font-size: 8.5px; color: var(--accent1); margin: 1px 0; }
+  .mt-case .res  { font-family: var(--mono); font-size: 9px; color: var(--accent3); }
+
+  /* ── NOTATION ROW ── */
+  .notation-row { display: flex; gap: 5px; margin: 3px 0; align-items: flex-start; }
+  .notation-sym {
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    min-width: 30px; text-align: center; line-height: 1.2;
+  }
+  .notation-body { font-size: 10px; flex: 1; }
+  .notation-body .nname { font-weight: 700; font-family: var(--body); font-size: 10.5px; }
+  .notation-body .ndef  { color: var(--muted); font-size: 9.5px; }
+
+  /* ── ALGO BADGE ── */
+  .algo-row { display: flex; align-items: center; gap: 5px; margin: 2px 0; }
+  .algo-name { font-weight: 700; font-family: var(--body); font-size: 10.5px; min-width: 100px; }
+  .pill {
+    font-family: var(--mono); font-size: 8.5px;
+    padding: 1px 5px; border-radius: 10px;
+    white-space: nowrap;
+  }
+  .pill-cyan   { background: rgba(0,229,255,.12); color: var(--accent1); border: 1px solid rgba(0,229,255,.3); }
+  .pill-green  { background: rgba(184,255,87,.1); color: var(--accent3); border: 1px solid rgba(184,255,87,.3); }
+  .pill-red    { background: rgba(255,77,109,.1); color: var(--accent2); border: 1px solid rgba(255,77,109,.3); }
+  .pill-gold   { background: rgba(255,183,3,.1);  color: var(--accent4); border: 1px solid rgba(255,183,3,.3); }
+  .pill-purple { background: rgba(199,125,255,.1);color: var(--accent5); border: 1px solid rgba(199,125,255,.3); }
+
+  /* ── GROWTH RULER ── */
+  .growth-ruler {
+    display: flex; align-items: center;
+    gap: 4px; margin: 4px 0; flex-wrap: wrap;
+  }
+  .gr-item {
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 5px; border-radius: 3px;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .arrow { color: var(--muted); font-size: 9px; }
+
+  /* ── KEY QUESTIONS highlight ── */
+  .kq { margin-top: 3px; }
+  .kq-item {
+    display: flex; align-items: flex-start; gap: 4px;
+    margin-bottom: 2px; font-size: 10px;
+  }
+  .kq-num {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    background: rgba(255,77,109,.15); color: var(--accent2);
+    padding: 0 3px; border-radius: 2px; min-width: 18px; text-align: center; margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border); padding-top: 4px; margin-top: 6px;
+    font-family: var(--mono); font-size: 8px; color: var(--muted);
+  }
+  .footer-units { display: flex; gap: 12px; }
+  .fu { display: flex; align-items: center; gap: 4px; }
+  .fu-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* ── SEPARATOR ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+
+  @media print {
+    body { width: 297mm; padding: 6px 8px; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="title-block">
+    <h1>DAA</h1>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--text); letter-spacing:1px;">Design &amp; Analysis of Algorithms</div>
+      <div class="sub">BCE26PC02 · Sem VI · B.Tech Computer Engineering · PCCOE Pune</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag t1">Unit 1 · Analysis</span>
+    <span class="tag t2">Unit 2 · D&amp;C · Greedy</span>
+    <span class="tag t3">Unit 3 · DP</span>
+    <span class="tag t4">Unit 4 · B&amp;B</span>
+    <span class="tag t5">Unit 4 · Backtracking</span>
+    <span class="badge">QUICK REF</span>
+  </div>
+</header>
+
+<!-- MAIN GRID -->
+<div class="grid">
+
+  <!-- ══ CARD 1: Asymptotic Notations ══ -->
+  <div class="card c1 col1">
+    <div class="card-title cyan">⬡ Asymptotic Notations</div>
+
+    <div class="notation-row">
+      <div class="notation-sym" style="color:var(--accent2)">O</div>
+      <div class="notation-body">
+        <div class="nname">Big-O — Upper Bound (Worst Case)</div>
+        <div class="ndef">f(n) ≤ c·g(n) for all n ≥ n₀, c > 0</div>
+      </div>
+    </div>
+    <div class="notation-row">
+      <div class="notation-sym" style="color:var(--accent3)">Ω</div>
+      <div class="notation-body">
+        <div class="nname">Omega — Lower Bound (Best Case)</div>
+        <div class="ndef">f(n) ≥ c·g(n) for all n ≥ n₀, c > 0</div>
+      </div>
+    </div>
+    <div class="notation-row">
+      <div class="notation-sym" style="color:var(--accent1)">Θ</div>
+      <div class="notation-body">
+        <div class="nname">Theta — Tight Bound (Average)</div>
+        <div class="ndef">c₁·g(n) ≤ f(n) ≤ c₂·g(n) for n ≥ n₀</div>
+      </div>
+    </div>
+
+    <div class="section-label">Growth Order (slowest → fastest)</div>
+    <div class="growth-ruler">
+      <div class="gr-item" style="background:rgba(184,255,87,.1);color:var(--accent3)">O(1)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(0,229,255,.08);color:var(--accent1)">O(log n)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(0,229,255,.08);color:var(--accent1)">O(√n)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(255,183,3,.1);color:var(--accent4)">O(n)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(255,183,3,.1);color:var(--accent4)">O(n log n)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(255,77,109,.12);color:var(--accent2)">O(n²)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(255,77,109,.12);color:var(--accent2)">O(2ⁿ)</div>
+      <span class="arrow">→</span>
+      <div class="gr-item" style="background:rgba(255,77,109,.18);color:var(--accent2)">O(n!)</div>
+    </div>
+  </div>
+
+  <!-- ══ CARD 2: Master Theorem ══ -->
+  <div class="card c4 col1">
+    <div class="card-title gold">⬡ Master Theorem</div>
+    <span class="formula">T(n) = aT(n/b) + f(n)   [a≥1, b>1]</span>
+    <div style="font-family:var(--mono);font-size:8.5px;color:var(--muted);margin:2px 0 3px">
+      log<sub>b</sub>a = p &nbsp;|&nbsp; Compare f(n) with n<sup>p</sup>
+    </div>
+    <div class="mt-cases">
+      <div class="mt-case">
+        <div class="cnum">1</div>
+        <div class="cond">f(n) = O(n<sup>p−ε</sup>)</div>
+        <div class="res">Θ(n<sup>log<sub>b</sub>a</sup>)</div>
+      </div>
+      <div class="mt-case">
+        <div class="cnum">2</div>
+        <div class="cond">f(n) = Θ(n<sup>p</sup>·log<sup>k</sup>n)</div>
+        <div class="res">Θ(n<sup>p</sup>log<sup>k+1</sup>n)</div>
+      </div>
+      <div class="mt-case">
+        <div class="cnum">3</div>
+        <div class="cond">f(n) = Ω(n<sup>p+ε</sup>)</div>
+        <div class="res">Θ(f(n))</div>
+      </div>
+    </div>
+    <div class="section-label">Classic Examples</div>
+    <div class="algo-row"><span class="algo-name" style="min-width:unset;font-size:9.5px">T(n)=2T(n/2)+n</span><span class="pill pill-green">Merge Sort → O(n log n) Case 2</span></div>
+    <div class="algo-row"><span class="algo-name" style="min-width:unset;font-size:9.5px">T(n)=T(n/2)+1</span><span class="pill pill-cyan">Binary Search → O(log n) Case 2</span></div>
+    <div class="algo-row"><span class="algo-name" style="min-width:unset;font-size:9.5px">T(n)=8T(n/2)+n²</span><span class="pill pill-red">→ O(n³) Case 1 [p=3 > 2]</span></div>
+    <div class="algo-row"><span class="algo-name" style="min-width:unset;font-size:9.5px">T(n)=3T(n/2)+n</span><span class="pill pill-purple">Karatsuba → O(n<sup>1.585</sup>) Case 3</span></div>
+  </div>
+
+  <!-- ══ CARD 3: Complexity Table ══ -->
+  <div class="card c2 col2">
+    <div class="card-title red">⬡ Algorithm Complexity Reference</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Algorithm</th><th>Strategy</th>
+          <th class="best">Best</th><th class="avg">Avg</th><th class="worst">Worst</th>
+          <th>Space</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="name-col">Binary Search</td><td>D&amp;C</td><td class="best">O(1)</td><td class="avg">O(log n)</td><td class="worst">O(log n)</td><td>O(1)</td></tr>
+        <tr><td class="name-col">Merge Sort</td><td>D&amp;C</td><td class="best">O(n log n)</td><td class="avg">O(n log n)</td><td class="worst">O(n log n)</td><td>O(n)</td></tr>
+        <tr><td class="name-col">Quick Sort</td><td>D&amp;C</td><td class="best">O(n log n)</td><td class="avg">O(n log n)</td><td class="worst">O(n²)</td><td>O(log n)</td></tr>
+        <tr><td class="name-col">Karatsuba Mult</td><td>D&amp;C</td><td class="best" colspan="3">O(n<sup>1.585</sup>)</td><td>O(n)</td></tr>
+        <tr><td class="name-col">Fractional KP</td><td>Greedy</td><td class="best" colspan="3">O(n log n)</td><td>O(1)</td></tr>
+        <tr><td class="name-col">Job Scheduling</td><td>Greedy</td><td class="best" colspan="3">O(n log n)</td><td>O(n)</td></tr>
+        <tr><td class="name-col">Dijkstra's</td><td>Greedy</td><td class="best" colspan="3">O(E log V)</td><td>O(V²)</td></tr>
+        <tr><td class="name-col">Prim's MST</td><td>Greedy</td><td class="best" colspan="3">O(E log V)</td><td>O(V)</td></tr>
+        <tr><td class="name-col">Kruskal's MST</td><td>Greedy</td><td class="best" colspan="3">O(E log E)</td><td>O(E)</td></tr>
+        <tr><td class="name-col">0/1 Knapsack</td><td>DP</td><td class="best" colspan="3">O(nW)</td><td>O(nW)</td></tr>
+        <tr><td class="name-col">Floyd-Warshall</td><td>DP</td><td class="best" colspan="3">O(V³)</td><td>O(V²)</td></tr>
+        <tr><td class="name-col">Bellman-Ford</td><td>DP/Graph</td><td class="best" colspan="3">O(VE)</td><td>O(V²)</td></tr>
+        <tr><td class="name-col">BFS / DFS</td><td>Graph</td><td class="best" colspan="3">O(V+E)</td><td>O(V)</td></tr>
+        <tr><td class="name-col">N-Queens (BT)</td><td>Backtrack</td><td class="best" colspan="3">O(n!)</td><td>O(n)</td></tr>
+        <tr><td class="name-col">Graph Coloring</td><td>Backtrack</td><td class="best" colspan="3">O(m^V)</td><td>O(V)</td></tr>
+        <tr><td class="name-col">TSP (B&amp;B)</td><td>B&amp;B</td><td class="best" colspan="3">O(n²·2ⁿ)</td><td>O(n)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ CARD 4: Divide & Conquer ══ -->
+  <div class="card c1 col1">
+    <div class="card-title cyan">⬡ Divide &amp; Conquer</div>
+    <div style="font-size:10px;margin-bottom:3px;">
+      <strong>Steps:</strong> <span style="color:var(--accent2)">Divide</span> → <span style="color:var(--accent4)">Conquer</span> → <span style="color:var(--accent3)">Combine</span>
+    </div>
+
+    <div class="section-label">Binary Search</div>
+    <p>Recurrence: <code>T(n)=T(n/2)+C</code> → <code>O(log n)</code></p>
+    <p>Best:O(1) mid hit · Worst:O(log n) absent</p>
+
+    <div class="section-label">Merge Sort</div>
+    <p>Recurrence: <code>T(n)=2T(n/2)+n</code> → <code>O(n log n)</code></p>
+    <p>Stable · Always O(n log n) · O(n) space</p>
+
+    <div class="section-label">Quick Sort</div>
+    <p>Pivot partitions array · Last/random pivot</p>
+    <p>Worst when sorted · Avg <code>O(n log n)</code> · O(log n) space</p>
+
+    <div class="section-label">Karatsuba Multiplication</div>
+    <span class="formula">X·Y = ac·10²ᵐ + (ad+bc)·10ᵐ + bd</span>
+    <p style="font-size:9.5px"><code>ad+bc = (a+b)(c+d)−ac−bd</code> → only 3 recursive calls</p>
+    <p>Recurrence: <code>T(n)=3T(n/2)+O(n)</code> → <code>O(n^1.585)</code></p>
+  </div>
+
+  <!-- ══ CARD 5: Greedy ══ -->
+  <div class="card c2 col1">
+    <div class="card-title red">⬡ Greedy Strategy</div>
+    <p style="font-size:10px;margin-bottom:3px;"><em>Locally optimal choice at each step → globally optimal (when applicable)</em></p>
+
+    <div class="section-label">Fractional Knapsack</div>
+    <p>Sort by profit/weight ratio ↓ · Take fractionally</p>
+    <p><code>O(n log n)</code> · Optimal for fractional, NOT 0/1</p>
+
+    <div class="section-label">Job Scheduling</div>
+    <p>Sort by profit ↓ · Schedule in latest available slot before deadline</p>
+    <p><code>O(n log n)</code> sort + O(n²) scheduling</p>
+
+    <div class="section-label">Dijkstra's Algorithm</div>
+    <p>Single-source shortest path · Non-negative weights only</p>
+    <p>Priority queue + greedy relaxation → <code>O(E log V)</code></p>
+    <p style="font-size:9px;color:var(--muted)">Use Bellman-Ford O(VE) for negative weights / cycle detection</p>
+
+    <div class="section-label">MST Algorithms</div>
+    <div class="algo-row">
+      <span class="pill pill-cyan">Prim's</span>
+      <span style="font-size:9.5px">Grows tree from vertex · Dense graphs · O(E log V)</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-green">Kruskal's</span>
+      <span style="font-size:9.5px">Sort edges, add min no-cycle · Sparse graphs · O(E log E)</span>
+    </div>
+  </div>
+
+  <!-- ══ CARD 6: Dynamic Programming ══ -->
+  <div class="card c3 col1">
+    <div class="card-title green">⬡ Dynamic Programming</div>
+    <p style="font-size:10px;margin-bottom:3px;"><em>Solve once, store results — avoid recomputation (overlapping subproblems + optimal substructure)</em></p>
+
+    <div class="section-label">0/1 Knapsack — DP Table</div>
+    <span class="formula">dp[i][w] = max(dp[i-1][w], val[i]+dp[i-1][w-wt[i]])</span>
+    <p>Time: <code>O(nW)</code> · Space: <code>O(nW)</code> or O(W) optimized</p>
+
+    <div class="section-label">Floyd-Warshall (All-Pairs Shortest Path)</div>
+    <span class="formula">dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j])</span>
+    <p>Time: <code>O(V³)</code> · Works with negative edges (no neg cycles)</p>
+
+    <div class="section-label">Binomial Coefficient</div>
+    <span class="formula">C(n,k) = C(n-1,k-1) + C(n-1,k)</span>
+
+    <div class="section-label">Sum of Subset · Multistage Graphs</div>
+    <p>Sum of Subset: <code>dp[i][s] = dp[i-1][s] || dp[i-1][s-a[i]]</code></p>
+    <p>Multistage: Shortest path with stages, forward/backward DP</p>
+
+    <div class="section-label">Memoization vs Tabulation</div>
+    <div class="algo-row">
+      <span class="pill pill-purple">Top-Down</span>
+      <span style="font-size:9.5px">Recursive + memo cache · natural, lazy</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-gold">Bottom-Up</span>
+      <span style="font-size:9.5px">Iterative table · no stack overflow · faster</span>
+    </div>
+  </div>
+
+  <!-- ══ CARD 7: Backtracking ══ -->
+  <div class="card c5 col1">
+    <div class="card-title purple">⬡ Backtracking</div>
+    <p style="font-size:10px;margin-bottom:3px;"><em>DFS + prune infeasible paths → explore all valid solutions</em></p>
+
+    <div class="section-label">8-Queens Problem</div>
+    <p>Place N queens so no two share row/col/diagonal</p>
+    <p>Check: <code>col[j]</code>, <code>diag1[i-j]</code>, <code>diag2[i+j]</code></p>
+    <p>92 solutions for N=8 · Worst: <code>O(n!)</code></p>
+
+    <div class="section-label">Graph Coloring</div>
+    <p>Assign colors so no adjacent vertices share color</p>
+    <p>Try color c for vertex v → recurse → backtrack if conflict</p>
+    <p>Chromatic number χ(G) · Time: <code>O(m^V)</code></p>
+
+    <div class="section-label">0/1 Knapsack via Backtracking</div>
+    <p>State-space tree · include/exclude each item</p>
+    <p>Prune: weight > capacity or bound < best</p>
+    <p><strong>Upper bound:</strong> current + greedy fill of remaining</p>
+
+    <div class="section-label">Control Abstraction</div>
+    <p><code>BT(x[1..k]) → if(feasible) → BT(x[1..k+1])</code></p>
+    <p>Bounding fn prunes; answer node = complete solution</p>
+  </div>
+
+  <!-- ══ CARD 8: Branch & Bound ══ -->
+  <div class="card c4 col1">
+    <div class="card-title gold">⬡ Branch &amp; Bound</div>
+    <p style="font-size:10px;margin-bottom:3px;"><em>Pruning using cost bounds for optimization — better than backtracking for min/max problems</em></p>
+
+    <div class="section-label">Three Strategies</div>
+    <div class="algo-row">
+      <span class="pill pill-cyan">FIFO</span>
+      <span style="font-size:9.5px">Queue (BFS style) · explores breadth-first</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-red">LIFO</span>
+      <span style="font-size:9.5px">Stack (DFS style) · less memory but may be slow</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-green">LC (Best-First)</span>
+      <span style="font-size:9.5px">Priority queue · explore node with best bound first</span>
+    </div>
+
+    <div class="section-label">0/1 Knapsack — B&amp;B</div>
+    <p>Upper bound at node = current profit + greedy(remaining)</p>
+    <p>Prune if UB ≤ best known · <code>O(2ⁿ)</code> worst but much better avg</p>
+
+    <div class="section-label">TSP — Branch &amp; Bound</div>
+    <p>Lower bound via row/column reduction of cost matrix</p>
+    <p>Explore cities, prune paths with LB ≥ current best tour</p>
+    <span class="formula">Reduced cost matrix → LB = sum of reduction constants</span>
+
+    <div class="section-label">BT vs B&amp;B</div>
+    <div class="algo-row">
+      <span style="font-size:9.5px;color:var(--accent5)">Backtracking</span>
+      <span style="font-size:9.5px">→ feasibility · combinatorial problems</span>
+    </div>
+    <div class="algo-row">
+      <span style="font-size:9.5px;color:var(--accent4)">Branch &amp; Bound</span>
+      <span style="font-size:9.5px">→ optimality · uses cost bounds</span>
+    </div>
+  </div>
+
+  <!-- ══ CARD 9: P/NP + Key Recurrences ══ -->
+  <div class="card c1 col1">
+    <div class="card-title cyan">⬡ P, NP &amp; Key Recurrences</div>
+    <div class="section-label">Complexity Classes</div>
+    <div class="algo-row">
+      <span class="pill pill-green">P</span>
+      <span style="font-size:9.5px">Solvable in poly time — Sorting, Shortest Path</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-gold">NP</span>
+      <span style="font-size:9.5px">Verifiable in poly time — SAT, Knapsack</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-red">NP-Hard</span>
+      <span style="font-size:9.5px">At least as hard as NP — TSP, Halting Problem</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-purple">NP-Complete</span>
+      <span style="font-size:9.5px">NP ∩ NP-Hard — 3-SAT, Hamiltonian Cycle</span>
+    </div>
+    <p style="font-size:9px;color:var(--muted);margin-top:2px">P ⊆ NP · NP-Complete ⊆ NP-Hard · P=NP? (unsolved)</p>
+
+    <div class="section-label">Key Recurrences</div>
+    <div class="algo-row"><span class="pill pill-cyan" style="min-width:90px;text-align:center">T(n)=T(n/2)+1</span><span style="font-size:9.5px">→ O(log n) · Binary Search</span></div>
+    <div class="algo-row"><span class="pill pill-cyan" style="min-width:90px;text-align:center">T(n)=2T(n/2)+n</span><span style="font-size:9.5px">→ O(n log n) · Merge Sort</span></div>
+    <div class="algo-row"><span class="pill pill-gold" style="min-width:90px;text-align:center">T(n)=T(n-1)+C</span><span style="font-size:9.5px">→ O(n) · Factorial, Tree</span></div>
+    <div class="algo-row"><span class="pill pill-red" style="min-width:90px;text-align:center">T(n)=2T(n-1)+1</span><span style="font-size:9.5px">→ O(2ⁿ) · Tower of Hanoi</span></div>
+    <div class="algo-row"><span class="pill pill-purple" style="min-width:90px;text-align:center">T(n)=T(n-1)+T(n-2)</span><span style="font-size:9.5px">→ O(2ⁿ) naive · O(n) DP</span></div>
+  </div>
+
+  <!-- ══ CARD 10: High-Frequency QB Questions ══ -->
+  <div class="card c2 col2">
+    <div class="card-title red">⬡ Exam-Frequent Question Bank Patterns</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div>
+        <div class="section-label">Unit 1 — Must Know</div>
+        <div class="kq">
+          <div class="kq-item"><span class="kq-num">★</span><span>Prove O, Ω, Θ for f(n)=2n²+3n+4</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Solve T(n)=8T(n/2)+n² using Master Theorem</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Best/Worst/Avg case of Linear Search &amp; BST</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>P, NP, NP-Hard, NP-Complete Venn diagram</span></div>
+          <div class="kq-item"><span class="kq-num">Q</span><span>Master Theorem applicable for T(n)=2T(n/2)+n log n?</span></div>
+        </div>
+
+        <div class="section-label">Unit 2 — Must Know</div>
+        <div class="kq">
+          <div class="kq-item"><span class="kq-num">★</span><span>Apply Quick Sort [7,2,9,4,3,1,5], last as pivot</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Fractional Knapsack: W=(2,3,5,7,1,4,1), P=(10,5,15,7,6,18,3), M=15</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Dijkstra: A→B(2),A→C(4),B→C(1),B→D(7),C→D(3),C→E(5),D→E(2)</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Karatsuba: Multiply X=1234, Y=5678 step-by-step</span></div>
+          <div class="kq-item"><span class="kq-num">Q</span><span>Job Scheduling: N=4, P=(30,35,20,25), D=(2,1,2,1)</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Unit 3 — Must Know</div>
+        <div class="kq">
+          <div class="kq-item"><span class="kq-num">★</span><span>0/1 Knapsack DP: W=(2,3,4,2), V=(3,4,5,3), Cap=5</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Floyd-Warshall: A→B(8),B→C(1),A→D(1),D→C(9),D→B(2),C→A(4)</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Sum of Subset: {3,34,4,12,5,2}, target=9</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Compute C(6,3) using DP; compare with recursion</span></div>
+          <div class="kq-item"><span class="kq-num">Q</span><span>Bellman-Ford: detect negative cycle A→B(3),B→C(2),C→A(−6)</span></div>
+        </div>
+
+        <div class="section-label">Unit 4 — Must Know</div>
+        <div class="kq">
+          <div class="kq-item"><span class="kq-num">★</span><span>8-Queens: place queens on 4×4, show recursive steps</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>0/1 Knapsack BT: W=(5,3,4,2), P=(20,15,12,10), M=7</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>FIFO B&amp;B Knapsack: W=(4,5,1), V=(40,30,20), Cap=10</span></div>
+          <div class="kq-item"><span class="kq-num">★</span><span>Graph Coloring BT: 4 vertices, edges (1-2),(1-3),(2-4),(3-4), 3 colors</span></div>
+          <div class="kq-item"><span class="kq-num">Q</span><span>LC B&amp;B TSP for 3×3 cost matrix [∞,10,5|8,∞,9|4,6,∞]</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CARD 11: Strategy Comparison ══ -->
+  <div class="card c3 col1">
+    <div class="card-title green">⬡ Strategy Comparison</div>
+    <table>
+      <thead>
+        <tr><th>Strategy</th><th>Approach</th><th>Optimal?</th><th>Typical Use</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color:var(--accent1)">D&amp;C</span></td>
+          <td>Divide → sub-solve → merge</td>
+          <td style="color:var(--accent3)">Yes</td>
+          <td>Sorting, Search, Mult</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent2)">Greedy</span></td>
+          <td>Local optimal at each step</td>
+          <td style="color:var(--accent4)">Sometimes</td>
+          <td>Knapsack(frac), MST, SP</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent3)">DP</span></td>
+          <td>Memoize overlapping subs</td>
+          <td style="color:var(--accent3)">Yes</td>
+          <td>Knapsack(0/1), APSP</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent5)">Backtrack</span></td>
+          <td>DFS + feasibility prune</td>
+          <td style="color:var(--accent3)">Yes (all)</td>
+          <td>N-Queens, Coloring</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent4)">B&amp;B</span></td>
+          <td>DFS/BFS + bound prune</td>
+          <td style="color:var(--accent3)">Yes (opt)</td>
+          <td>TSP, 0/1 Knapsack</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-label">Greedy vs DP — Knapsack</div>
+    <div class="algo-row">
+      <span class="pill pill-red">Fractional</span>
+      <span style="font-size:9.5px">Greedy works! → O(n log n)</span>
+    </div>
+    <div class="algo-row">
+      <span class="pill pill-green">0/1</span>
+      <span style="font-size:9.5px">Greedy FAILS → Use DP O(nW)</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-units">
+    <div class="fu"><div class="fu-dot" style="background:var(--accent1)"></div>U1: Algorithmic Analysis (8 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--accent2)"></div>U2: D&amp;C · Greedy (7 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--accent3)"></div>U3: Dynamic Programming (8 hrs)</div>
+    <div class="fu"><div class="fu-dot" style="background:var(--accent4)"></div>U4: Backtracking · B&amp;B (7 hrs)</div>
+  </div>
+  <div style="text-align:right;">
+    Marks: FA1(10) + FA2(10) + SA(30) + TW(50) = 100 &nbsp;|&nbsp; BCE26PC02 · DAA Cheat Sheet
+  </div>
+</footer>
+
+</body>
+</html>

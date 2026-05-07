@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative AI Cheat Sheet – BCS26MD05</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d14;
+    --surface1: #13131f;
+    --surface2: #1a1a2e;
+    --surface3: #1f1f35;
+    --border: #2a2a45;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --violet: #a78bfa;
+    --violet-d: #7c3aed;
+    --violet-l: #ddd6fe;
+    --cyan: #22d3ee;
+    --cyan-d: #0891b2;
+    --green: #4ade80;
+    --green-d: #16a34a;
+    --amber: #fbbf24;
+    --amber-d: #d97706;
+    --rose: #fb7185;
+    --rose-d: #be123c;
+    --pink: #f472b6;
+    --indigo: #818cf8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #0d0d14;
+    color: var(--text);
+    font-size: 9.5px;
+    line-height: 1.45;
+  }
+
+  @media print {
+    body { background: white; color: #111; }
+    .page { box-shadow: none !important; }
+  }
+
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 60px rgba(167,139,250,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a0533 0%, #0f0f23 50%, #001a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 10px; }
+
+  .ai-badge {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--violet-d), var(--cyan-d));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 0 14px rgba(167,139,250,0.4);
+  }
+
+  .title-block h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--violet-l), var(--cyan), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+
+  .title-block p {
+    font-size: 8.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.4px;
+  }
+
+  .unit-pills { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .unit-pill {
+    border-radius: 20px;
+    padding: 2px 9px;
+    font-size: 8px;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.2px;
+    border: 1px solid;
+  }
+
+  .pill-v { border-color: var(--violet); color: var(--violet); background: rgba(167,139,250,0.1); }
+  .pill-c { border-color: var(--cyan);   color: var(--cyan);   background: rgba(34,211,238,0.08); }
+  .pill-g { border-color: var(--green);  color: var(--green);  background: rgba(74,222,128,0.08); }
+  .pill-r { border-color: var(--rose);   color: var(--rose);   background: rgba(251,113,133,0.08); }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr 1fr;
+    flex: 1;
+  }
+
+  .card {
+    padding: 9px 11px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card:last-child, .card.no-right { border-right: none; }
+  .span2 { grid-column: span 2; }
+  .span4 { grid-column: span 4; border-right: none; }
+  .no-bottom { border-bottom: none; }
+
+  /* ── CARD TITLE ── */
+  .card-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .ct-v { background: rgba(167,139,250,0.15); color: var(--violet); border: 1px solid rgba(167,139,250,0.3); }
+  .ct-c { background: rgba(34,211,238,0.12);  color: var(--cyan);   border: 1px solid rgba(34,211,238,0.25); }
+  .ct-g { background: rgba(74,222,128,0.12);  color: var(--green);  border: 1px solid rgba(74,222,128,0.25); }
+  .ct-r { background: rgba(251,113,133,0.12); color: var(--rose);   border: 1px solid rgba(251,113,133,0.25); }
+
+  /* ── SECTION HEADERS ── */
+  .sh {
+    font-size: 8.5px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    margin: 5px 0 3px;
+    padding-left: 6px;
+    border-left: 2px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .sh-v { border-color: var(--violet); color: var(--violet-l); }
+  .sh-c { border-color: var(--cyan);   color: var(--cyan); }
+  .sh-g { border-color: var(--green);  color: var(--green); }
+  .sh-a { border-color: var(--amber);  color: var(--amber); }
+  .sh-r { border-color: var(--rose);   color: var(--rose); }
+  .sh-p { border-color: var(--pink);   color: var(--pink); }
+  .sh-i { border-color: var(--indigo); color: var(--indigo); }
+
+  /* ── LISTS ── */
+  ul.clean { list-style: none; padding: 0; }
+  ul.clean li {
+    padding: 1.5px 0 1.5px 12px;
+    position: relative;
+    color: var(--muted);
+    font-size: 8.5px;
+  }
+  ul.clean li::before {
+    content: "▸";
+    position: absolute; left: 0;
+    color: var(--violet);
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  ul.clean.cyan li::before { color: var(--cyan); }
+  ul.clean.green li::before { color: var(--green); }
+  ul.clean.rose  li::before { color: var(--rose); }
+  ul.clean.amber li::before { color: var(--amber); }
+  ul.clean li strong { color: var(--text); font-weight: 700; }
+
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    padding: 0px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .tag-v { background: rgba(167,139,250,0.18); color: var(--violet); }
+  .tag-c { background: rgba(34,211,238,0.15);  color: var(--cyan); }
+  .tag-g { background: rgba(74,222,128,0.15);  color: var(--green); }
+  .tag-a { background: rgba(251,191,36,0.15);  color: var(--amber); }
+  .tag-r { background: rgba(251,113,133,0.15); color: var(--rose); }
+  .tag-p { background: rgba(244,114,182,0.15); color: var(--pink); }
+
+  /* ── TABLE ── */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5px;
+    margin-top: 4px;
+  }
+  .mini-table th {
+    background: var(--surface3);
+    color: var(--violet-l);
+    padding: 3px 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 600;
+    text-align: left;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mini-table td {
+    padding: 2.5px 5px;
+    border-bottom: 1px solid var(--surface3);
+    color: var(--muted);
+    vertical-align: top;
+    font-size: 8px;
+  }
+  .mini-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .mini-table td:first-child { font-weight: 700; color: var(--text); }
+
+  /* ── CHIPS ── */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .chip {
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 7.5px;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono', monospace;
+    border: 1px solid;
+  }
+  .chip-v { border-color: rgba(167,139,250,0.4); color: var(--violet); background: rgba(167,139,250,0.1); }
+  .chip-c { border-color: rgba(34,211,238,0.35);  color: var(--cyan);   background: rgba(34,211,238,0.08); }
+  .chip-g { border-color: rgba(74,222,128,0.35);  color: var(--green);  background: rgba(74,222,128,0.08); }
+  .chip-a { border-color: rgba(251,191,36,0.35);  color: var(--amber);  background: rgba(251,191,36,0.08); }
+  .chip-r { border-color: rgba(251,113,133,0.35); color: var(--rose);   background: rgba(251,113,133,0.08); }
+  .chip-p { border-color: rgba(244,114,182,0.35); color: var(--pink);   background: rgba(244,114,182,0.08); }
+  .chip-i { border-color: rgba(129,140,248,0.35); color: var(--indigo); background: rgba(129,140,248,0.08); }
+
+  /* ── USE-CASE CARDS ── */
+  .uc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    margin-top: 4px;
+  }
+  .uc-item {
+    border-radius: 5px;
+    padding: 4px 6px;
+    border: 1px solid;
+  }
+  .uc-item .uc-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .uc-item .uc-desc { font-size: 7.5px; color: var(--muted); }
+  .uc-v { border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.06); }
+  .uc-v .uc-name { color: var(--violet); }
+  .uc-c { border-color: rgba(34,211,238,0.25);  background: rgba(34,211,238,0.05); }
+  .uc-c .uc-name { color: var(--cyan); }
+  .uc-g { border-color: rgba(74,222,128,0.25);  background: rgba(74,222,128,0.05); }
+  .uc-g .uc-name { color: var(--green); }
+  .uc-a { border-color: rgba(251,191,36,0.25);  background: rgba(251,191,36,0.05); }
+  .uc-a .uc-name { color: var(--amber); }
+  .uc-r { border-color: rgba(251,113,133,0.25); background: rgba(251,113,133,0.05); }
+  .uc-r .uc-name { color: var(--rose); }
+  .uc-p { border-color: rgba(244,114,182,0.25); background: rgba(244,114,182,0.05); }
+  .uc-p .uc-name { color: var(--pink); }
+
+  /* ── DIVIDER ── */
+  .div-line {
+    border: none;
+    border-top: 1px solid var(--surface3);
+    margin: 5px 0;
+  }
+
+  /* ── TWO COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+
+  /* ── PRINCIPLE BOX ── */
+  .principle-row { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
+  .pbox {
+    flex: 1; min-width: 55px;
+    border-radius: 5px;
+    padding: 4px 5px;
+    border: 1px solid;
+    text-align: center;
+  }
+  .pbox .p-icon { font-size: 13px; display: block; margin-bottom: 1px; }
+  .pbox .p-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .pbox .p-desc { font-size: 7px; color: var(--muted); }
+  .pbox-v { border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.07); }
+  .pbox-v .p-name { color: var(--violet); }
+  .pbox-c { border-color: rgba(34,211,238,0.3);  background: rgba(34,211,238,0.06); }
+  .pbox-c .p-name { color: var(--cyan); }
+  .pbox-g { border-color: rgba(74,222,128,0.3);  background: rgba(74,222,128,0.06); }
+  .pbox-g .p-name { color: var(--green); }
+  .pbox-a { border-color: rgba(251,191,36,0.3);  background: rgba(251,191,36,0.06); }
+  .pbox-a .p-name { color: var(--amber); }
+  .pbox-r { border-color: rgba(251,113,133,0.3); background: rgba(251,113,133,0.06); }
+  .pbox-r .p-name { color: var(--rose); }
+
+  /* ── HOT Q FOOTER ── */
+  .hotq-bar {
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    padding: 7px 11px 6px;
+  }
+  .hotq-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--amber);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hotq-title::before {
+    content: '⚡';
+    font-size: 9px;
+  }
+  .hotq-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  .hotq-item {
+    background: rgba(251,191,36,0.05);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 5px;
+    padding: 4px 7px;
+    font-size: 8px;
+  }
+  .hotq-item strong {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    color: var(--amber);
+    margin-bottom: 1px;
+    font-weight: 600;
+  }
+  .hotq-item span { color: var(--muted); }
+
+  /* ── PAGE FOOTER ── */
+  footer {
+    background: var(--surface1);
+    border-top: 2px solid var(--violet-d);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5px;
+    color: var(--muted);
+  }
+  footer span.accent { color: var(--violet); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <div class="ai-badge">🤖</div>
+      <div class="title-block">
+        <h1>Generative AI — Quick Cheat Sheet</h1>
+        <p>BCS26MD05  |  B.Tech All Branches  |  Semester VI  |  Dept. of Multidisciplinary Studies</p>
+      </div>
+    </div>
+    <div class="unit-pills">
+      <span class="unit-pill pill-v">Unit I: Introduction</span>
+      <span class="unit-pill pill-c">Unit II: Finance &amp; Business</span>
+      <span class="unit-pill pill-g">Unit III: Science &amp; Research</span>
+      <span class="unit-pill pill-r">Unit IV: Responsible AI</span>
+    </div>
+  </header>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- ══ UNIT I ══ -->
+    <div class="card">
+      <span class="card-title ct-v">Unit I — Introduction to Gen AI</span>
+
+      <p class="sh sh-v">What is Generative AI?</p>
+      <ul class="clean">
+        <li><strong>Definition</strong> – AI that creates new content (text, images, code, audio, video) from patterns in training data</li>
+        <li><strong>Discriminative AI</strong> – Classifies existing data (e.g., spam filter)</li>
+        <li><strong>Generative AI</strong> – Creates new data matching training distribution</li>
+        <li><strong>Foundation Models</strong> – Large pre-trained models (GPT-4, Gemini, Claude)</li>
+        <li><strong>LLMs</strong> – Large Language Models; predict next token; billions of params</li>
+        <li><strong>Prompt</strong> – Input text/instruction to a GenAI model</li>
+        <li><strong>Hallucination</strong> – AI generating confident but factually wrong outputs</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-c">Key Model Architectures</p>
+      <table class="mini-table">
+        <tr><th>Model</th><th>Mechanism</th><th>Used For</th></tr>
+        <tr><td>Transformer</td><td>Self-attention</td><td>Text, code gen</td></tr>
+        <tr><td>GAN</td><td>Gen + Discriminator</td><td>Images, synth data</td></tr>
+        <tr><td>VAE</td><td>Encode→latent→decode</td><td>Image gen, anomaly</td></tr>
+        <tr><td>Diffusion</td><td>Noise → denoise</td><td>DALL-E, Stable Diff</td></tr>
+      </table>
+
+      <hr class="div-line">
+      <p class="sh sh-a">Real-World Applications</p>
+      <div class="uc-grid">
+        <div class="uc-item uc-v"><span class="uc-name">Content Creation</span><span class="uc-desc">Blogs, scripts, ads, product descriptions</span></div>
+        <div class="uc-item uc-c"><span class="uc-name">Code Generation</span><span class="uc-desc">GitHub Copilot, auto snippets</span></div>
+        <div class="uc-item uc-g"><span class="uc-name">Healthcare</span><span class="uc-desc">Reports, diagnosis assist, chatbots</span></div>
+        <div class="uc-item uc-a"><span class="uc-name">Education</span><span class="uc-desc">Personalized quizzes, adaptive content</span></div>
+      </div>
+
+      <hr class="div-line">
+      <p class="sh sh-r">Limitations &amp; Challenges</p>
+      <div class="chip-row">
+        <span class="chip chip-r">Hallucinations</span>
+        <span class="chip chip-a">Bias in output</span>
+        <span class="chip chip-v">Data privacy</span>
+        <span class="chip chip-c">IP / copyright</span>
+        <span class="chip chip-p">Deepfakes</span>
+        <span class="chip chip-i">High compute cost</span>
+        <span class="chip chip-g">Explainability</span>
+      </div>
+    </div>
+
+    <!-- ══ UNIT II ══ -->
+    <div class="card">
+      <span class="card-title ct-c">Unit II — Finance &amp; Business</span>
+
+      <p class="sh sh-c">Algorithmic Trading &amp; Forecasting</p>
+      <ul class="clean cyan">
+        <li><strong>Synthetic Data</strong> – GAN-generated stock/market data to train models when real data is scarce</li>
+        <li><strong>Scenario Simulation</strong> – Simulate bullish/bearish/volatile markets for strategy testing</li>
+        <li><strong>Forecasting</strong> – AI predicts price trends using historical + synthetic patterns</li>
+        <li><strong>Overfitting Risk</strong> – Models trained on synthetic data may fail on real market shifts</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-g">Fraud Detection &amp; Risk Mgmt</p>
+      <ul class="clean green">
+        <li><strong>Synthetic Fraud Patterns</strong> – Generate rare fraud transactions to improve detection model training</li>
+        <li><strong>Anomaly Detection</strong> – GenAI flags unusual patterns vs. normal baseline</li>
+        <li><strong>Credit Risk Modeling</strong> – Synthetic loan data expands training set for better risk scoring</li>
+        <li><strong>Limitation</strong> – Synthetic data may not represent evolving real cyber threats</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-v">Customer Service &amp; Chatbots</p>
+      <ul class="clean">
+        <li><strong>LLM Chatbots</strong> – Handle queries 24/7 with NLP; reduce agent workload</li>
+        <li><strong>Limitation</strong> – Struggles with complex/multilingual/edge-case queries</li>
+        <li><strong>Ethical Risk</strong> – Automated financial advice without human oversight</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-a">Marketing, Automation &amp; Reports</p>
+      <table class="mini-table">
+        <tr><th>Application</th><th>GenAI Role</th></tr>
+        <tr><td>Ad Generation</td><td>Personalized ads from customer data; watch for bias</td></tr>
+        <tr><td>Financial Reports</td><td>Auto-summarize large datasets; accuracy &amp; accountability risks</td></tr>
+        <tr><td>Invoice Processing</td><td>Extract &amp; validate data; reduce manual errors</td></tr>
+        <tr><td>Supply Chain</td><td>Simulate disruptions (port delays, demand spikes)</td></tr>
+        <tr><td>Process Automation</td><td>RPA + GenAI for end-to-end workflow optimization</td></tr>
+      </table>
+    </div>
+
+    <!-- ══ UNIT III ══ -->
+    <div class="card">
+      <span class="card-title ct-g">Unit III — Science &amp; Research</span>
+
+      <p class="sh sh-g">Scientific Discovery</p>
+      <ul class="clean green">
+        <li><strong>Drug Discovery</strong> – GenAI generates candidate molecules; simulate molecular interactions (GANs / VAEs)</li>
+        <li><strong>Protein Design</strong> – Generate new protein structures (AlphaFold-like)</li>
+        <li><strong>Personalized Medicine</strong> – GenAI designs drugs based on patient-specific genomics</li>
+        <li><strong>Hypothesis Gen</strong> – AI proposes multiple hypotheses from observed patterns</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-c">Simulation &amp; Data Augmentation</p>
+      <ul class="clean cyan">
+        <li><strong>Climate Simulation</strong> – Synthetic climate data for long-term scenario modeling</li>
+        <li><strong>Medical Imaging</strong> – GAN-generated synthetic MRI scans augment rare-disease datasets</li>
+        <li><strong>Autonomous Vehicles</strong> – Generate diverse driving scenarios for safer training</li>
+        <li><strong>Crop / Agri Data</strong> – Synthetic datasets for yield prediction in data-scarce settings</li>
+        <li><strong>Population Modeling</strong> – Simulate population growth &amp; disease spread scenarios</li>
+        <li><strong>Missing Data</strong> – GenAI fills gaps in incomplete datasets</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-v">Collaboration &amp; Knowledge Sharing</p>
+      <ul class="clean">
+        <li><strong>AI Tools</strong> – <span class="tag tag-v">ChatGPT</span> <span class="tag tag-c">Notion AI</span> <span class="tag tag-g">Grammarly</span> for report co-creation</li>
+        <li><strong>Multilingual Summaries</strong> – Summarize papers in multiple languages</li>
+        <li><strong>Knowledge Distillation</strong> – Condense large research corpus into structured knowledge</li>
+        <li><strong>Interdisciplinary Collab</strong> – AI bridges domains (bio + CS + physics)</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-a">Ethical Implications in Science</p>
+      <ul class="clean amber">
+        <li><strong>Academic Integrity</strong> – AI-drafted papers; plagiarism &amp; authorship concerns</li>
+        <li><strong>Validation</strong> – Synthetic results must be clinically/experimentally verified</li>
+        <li><strong>Reproducibility</strong> – AI-generated data may not be reproducible</li>
+        <li><strong>Data Bias</strong> – Synthetic data amplifying existing dataset biases</li>
+      </ul>
+    </div>
+
+    <!-- ══ UNIT IV ══ -->
+    <div class="card no-right">
+      <span class="card-title ct-r">Unit IV — Responsible AI</span>
+
+      <p class="sh sh-r">Ethical Principles of AI</p>
+      <div class="principle-row">
+        <div class="pbox pbox-v">
+          <span class="p-icon">🔍</span>
+          <span class="p-name">Transparency</span>
+          <span class="p-desc">Explainable outputs &amp; decisions</span>
+        </div>
+        <div class="pbox pbox-c">
+          <span class="p-icon">⚖️</span>
+          <span class="p-name">Fairness</span>
+          <span class="p-desc">No discrimination; equal treatment</span>
+        </div>
+        <div class="pbox pbox-g">
+          <span class="p-icon">🛡️</span>
+          <span class="p-name">Privacy</span>
+          <span class="p-desc">Data protection; consent; GDPR</span>
+        </div>
+        <div class="pbox pbox-a">
+          <span class="p-icon">✅</span>
+          <span class="p-name">Accountability</span>
+          <span class="p-desc">Clear responsibility for AI actions</span>
+        </div>
+        <div class="pbox pbox-r">
+          <span class="p-icon">🔒</span>
+          <span class="p-name">Safety</span>
+          <span class="p-desc">Robustness; prevent misuse</span>
+        </div>
+      </div>
+
+      <hr class="div-line">
+      <p class="sh sh-a">Types of Bias in AI</p>
+      <ul class="clean amber">
+        <li><strong>Historical Bias</strong> – Training data reflects past discrimination (e.g., hiring mostly males)</li>
+        <li><strong>Representation Bias</strong> – Underrepresented groups in dataset</li>
+        <li><strong>Measurement Bias</strong> – Faulty data collection instruments/methods</li>
+        <li><strong>Aggregation Bias</strong> – One model for all groups with different characteristics</li>
+        <li><strong>Deployment Bias</strong> – Model used in context different from training</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-v">Bias Mitigation Techniques</p>
+      <table class="mini-table">
+        <tr><th>Stage</th><th>Technique</th></tr>
+        <tr><td>Pre-processing</td><td>Resampling, re-weighting, data augmentation</td></tr>
+        <tr><td>In-processing</td><td>Fairness constraints in model training</td></tr>
+        <tr><td>Post-processing</td><td>Calibrate outputs; adjust thresholds per group</td></tr>
+        <tr><td>Toolkits</td><td>IBM AI Fairness 360 (AIF360); What-If Tool</td></tr>
+      </table>
+
+      <hr class="div-line">
+      <p class="sh sh-p">Stakeholder Roles</p>
+      <ul class="clean">
+        <li><strong>Developers</strong> – Build fair, tested, documented models</li>
+        <li><strong>Organizations</strong> – Define ethical policies; audit AI systems</li>
+        <li><strong>Regulators</strong> – EU AI Act, GDPR; enforce compliance</li>
+        <li><strong>Users</strong> – Report bias; demand explainability</li>
+        <li><strong>Human-in-Loop</strong> – Expert review before critical AI decisions (healthcare, law)</li>
+      </ul>
+
+      <hr class="div-line">
+      <p class="sh sh-g">IBM AI Fairness 360 (AIF360)</p>
+      <ul class="clean green">
+        <li>Open-source toolkit by IBM for detecting &amp; mitigating bias</li>
+        <li>Provides 70+ fairness metrics &amp; 10+ mitigation algorithms</li>
+        <li>Supports pre/in/post-processing; works with sklearn &amp; PyTorch</li>
+        <li>Use: evaluate disparate impact, equalized odds, calibration</li>
+      </ul>
+    </div>
+
+    <!-- ══ HOT EXAM QUESTIONS ══ -->
+    <div class="hotq-bar span4">
+      <div class="hotq-title">Most Frequently Tested Questions (from QB)</div>
+      <div class="hotq-grid">
+        <div class="hotq-item">
+          <strong>U-I: Operational Efficiency</strong>
+          <span>Apply GenAI to improve efficiency in a business (clothing store, bank, YouTube creator) — automation, speed, personalization, cost reduction.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-I: Fraud Detection</strong>
+          <span>Analyze GenAI effectiveness in fraud detection vs. traditional methods — accuracy, real-time alerts, pattern recognition.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-I: LLM &amp; Limitations</strong>
+          <span>Analyze scalability of LLMs for customer service automation; discuss hallucinations, bias, and explainability limits.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-I: Ethical &amp; Societal Impact</strong>
+          <span>Deepfakes, academic integrity, AI in hiring — analyze ethical challenges and propose regulatory frameworks.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: Synthetic Data + Trading</strong>
+          <span>Apply GAN-generated synthetic stock data to improve trading model performance; analyze overfitting risks.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-II: Bias in Marketing AI</strong>
+          <span>Analyze how biased historical training data impacts AI-generated ads — targeting, brand perception, fairness.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-III: Drug Discovery Pipeline</strong>
+          <span>Apply GenAI to design molecules, simulate interactions, and generate hypotheses — illustrate with pharmaceutical example.</span>
+        </div>
+        <div class="hotq-item">
+          <strong>U-IV: Design Unbiased AI System</strong>
+          <span>Design a structured fair AI framework (hiring/loans) from data collection → training → deployment, using AIF360 toolkit.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Course: Generative AI Applications &nbsp;|&nbsp; Code: <span class="accent">BCS26MD05</span> &nbsp;|&nbsp; Credits: 02 &nbsp;|&nbsp; PCCoE Pune &nbsp;|&nbsp; AY 2025–26 Sem II</span>
+    <span>Units I–IV &nbsp;•&nbsp; 30 Hrs Total &nbsp;•&nbsp; <span class="accent">FA1 + FA2 + SA (50 marks)</span></span>
+  </footer>
+
+</div>
+</body>
+</html>
